@@ -1,5 +1,11 @@
-use std::str;
 use std::process::Command;
+use std::str;
+
+mod bit;
+pub use bit::*;
+
+mod message;
+pub use message::*;
 
 pub fn run_shell() {
     let output = if cfg!(target_os = "windows") {
