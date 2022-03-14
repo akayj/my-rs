@@ -4,13 +4,13 @@ use local_ip_address::local_ip;
 mod cmd;
 mod sys;
 
-/// Simple program to greet to person.
 #[derive(Parser, Debug)]
 #[clap(
     version = "v0.1",
     author = "Developed by @akayj (Akayj)",
     about = "An unidentifiable mechanism that helps you bypass GFW"
 )]
+/// Simple program to greet to person.
 struct Args {
     /// .toml config file name
     // #[clap(short, long, takes_value = true)]
@@ -36,9 +36,15 @@ fn my_area() {
     if let Err(e) = sys::battery_info() {
         println!("error: {}", e);
     }
+
+    sys::system_info();
+    sys::cpu_info();
 }
 
 fn my_addr() {
-    let my_local_ip = local_ip().unwrap();
-    println!("This is my local IP address: {:?}", my_local_ip);
+    if let Ok(my_local_ip) = local_ip() {
+        println!("This is my local IP address: {:?}", my_local_ip);
+    } else {
+        println!("Can not found you local IP address.");
+    }
 }
