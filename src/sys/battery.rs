@@ -5,6 +5,7 @@ pub fn battery_info() -> Result<(), battery::Error> {
 
     for (idx, maybe_battery) in manager.batteries()?.enumerate() {
         let battery = maybe_battery?;
+
         println!("Battery #{}:", idx);
         println!("Vendor: {}", battery.vendor().unwrap_or_default());
         println!("Model: {}", battery.model().unwrap_or_default());

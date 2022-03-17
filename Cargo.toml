@@ -17,6 +17,9 @@ battery = "0.7"
 sysinfo = "0.23.5"
 raw-cpuid = "10.2.0"
 
+lru = "0.7.3"
+dirs = "4.0"
+
 [target.'cfg(unix)'.dependencies]
 nix = "0.23.1"
 
@@ -30,10 +33,10 @@ winapi = { version = "0.3", features = ["winuser"] }
 
 [profile.dev]
 opt-level = 1
-strip = true
 
 [profile.release]
 opt-level = "s"
 codegen-units = 1
-strip = "debuginfo"
+# strip = "debuginfo"
+strip = true
 lto = "thin"

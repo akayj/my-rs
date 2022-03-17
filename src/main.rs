@@ -1,7 +1,9 @@
 use clap::Parser;
 use local_ip_address::local_ip;
 
+mod cache;
 mod cmd;
+mod ds;
 mod sys;
 
 #[derive(Parser, Debug)]
@@ -26,10 +28,20 @@ fn main() {
 
     my_area();
     my_addr();
+
+    sys::battle();
+    sys::moves();
+
+    ds::new_hashmap();
+    ds::raii();
+    ds::drop_struct_unit();
+    ds::refs();
+
+    cache::cache();
+    cache::list_dirs();
 }
 
 fn my_area() {
-    // let pi = 3.14156;
     cmd::mybits();
     cmd::print_message("this is rust enabled message").unwrap();
 
@@ -42,9 +54,8 @@ fn my_area() {
 }
 
 fn my_addr() {
-    if let Ok(my_local_ip) = local_ip() {
-        println!("This is my local IP address: {:?}", my_local_ip);
-    } else {
-        println!("Can not found you local IP address.");
+    match local_ip() {
+        Ok(ip) => println!("This is my local IP address: {:?}", ip),
+        _ => println!("local IP is unknown."),
     }
 }
