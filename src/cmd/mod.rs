@@ -25,5 +25,5 @@ pub fn run_shell() {
         Ok(v) => v,
         Err(e) => panic!("Invalid sequence: {}", e),
     };
-    println!("output: {}", s);
+    debug!("output: {}", s);
 }

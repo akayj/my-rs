@@ -9,7 +9,7 @@ pub use refer::*;
 pub fn new_hashmap() {
     // Creating a new Hash Map.
     let field_name = String::from("Favorite color");
-    let field_value = String::from("Blue");
+    let field_value = 10;
 
     let mut map = HashMap::new();
 
@@ -19,8 +19,6 @@ pub fn new_hashmap() {
     // hash map will be the owner of those values.
     map.insert(field_name, field_value);
 
+    map.entry(String::from("Yello")).or_insert(100);
     println!("map is {:?}", map);
-
-    //     println!("field_name: {}", field_name);
-    //     println!("field_value: {}", field_value);
 }

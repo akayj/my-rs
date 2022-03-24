@@ -10,9 +10,9 @@ pub fn system_info() {
     let mut sys = System::new_all();
     sys.refresh_all();
 
-    println!("=> disks:");
+    debug!("=> disks:");
     for disk in sys.disks() {
-        println!(
+        debug!(
             "[{:?}] Type: {:?}, Total: {:.2} GB, Free: {:.2} GB",
             disk.name(),
             disk.type_(),
@@ -31,14 +31,14 @@ pub fn system_info() {
     //     );
     // }
 
-    println!("=> system:");
-    println!(
-        "  total memory: {:.2} GB, used mem: {:.2} GB",
+    debug!("=> system:");
+    debug!(
+        "total memory: {:.2} GB, used mem: {:.2} GB",
         human_size(sys.total_memory(), MB),
         human_size(sys.used_memory(), MB),
     );
-    println!(
-        "  total swap: {:.2} GB, used: {:.2} GB",
+    debug!(
+        "total swap: {:.2} GB, used: {:.2} GB",
         human_size(sys.total_swap(), MB),
         human_size(sys.used_swap(), MB),
     );
