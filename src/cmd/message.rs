@@ -22,6 +22,7 @@ pub fn print_message(msg: &str) -> Result<i32, Error> {
 }
 
 #[cfg(not(windows))]
+// print `msg` which is a *string slice*, returning a *Result*
 pub fn print_message(msg: &str) -> Result<(), Error> {
     println!("not in windows, {}", msg);
     Ok(())

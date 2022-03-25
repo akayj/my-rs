@@ -1,6 +1,8 @@
 use std::process::Command;
 use std::str;
 
+use log::debug;
+
 mod bit;
 pub use bit::*;
 

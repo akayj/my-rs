@@ -1,3 +1,4 @@
+use log::debug;
 use sysinfo::{DiskExt, System, SystemExt};
 
 // const KB: u64 = 1 << 10;
@@ -13,8 +14,9 @@ pub fn system_info() {
     debug!("=> disks:");
     for disk in sys.disks() {
         debug!(
-            "[{:?}] Type: {:?}, Total: {:.2} GB, Free: {:.2} GB",
-            disk.name(),
+            // "[{:?}] Type: {:?}, Total: {:.2} GB, Free: {:.2} GB",
+            // disk.name(),
+            "Type: {:?}, Total: {:.2} GB, Free: {:.2} GB",
             disk.type_(),
             human_size(disk.total_space(), GIB),
             human_size(disk.available_space(), GIB),

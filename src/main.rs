@@ -1,9 +1,10 @@
-#[macro_use]
+// #[macro_use]
 extern crate log;
 
-use std::collections::HashMap;
+use std::time::Instant;
 
 use clap::Parser;
+use log::{debug, error};
 // use local_ip_address::local_ip;
 
 mod cache;
@@ -12,6 +13,7 @@ mod camera;
 mod cmd;
 mod ds;
 mod rand;
+mod requests;
 mod sys;
 mod video;
 
@@ -43,12 +45,20 @@ fn init_log(log_level: &str) {
         _ => log::LevelFilter::Debug,
     };
 
-    if let Err(e) = env_logger::builder().filter_level(level).try_init() {
+    if let Err(e) = env_logger::builder()
+        // .filter_level(level)
+        .filter(Some("scraper"), log::LevelFilter::Error)
+        .filter(Some("html5ever"), log::LevelFilter::Error)
+        .filter(Some("app_events"), level)
+        .try_init()
+    {
         println!("init log failed: {}", e);
     }
 }
 
 fn main() {
+    let started = Instant::now();
+
     let args = Args::parse();
     debug!("args: {:?}", args);
 
@@ -56,9 +66,11 @@ fn main() {
 
     debug!("starting up");
 
-    if let Err(e) = http_request() {
-        debug!("failed do http request: {}", e);
-    }
+    // if let Err(e) = requests::http_request() {
+    //     error!("failed do http request: {}", e);
+    // }
+
+    // requests::parse_html();
 
     cmd::run_shell();
 
@@ -75,24 +87,27 @@ fn main() {
 
     cache::cache();
     cache::list_dirs();
-    cache::which_word();
 
     video::read_file("./Cargo.toml");
     // video::parse_mp4("/Users/yj/我的电影/adam_project.mp4");
 
-    let s1 = "hello";
-    let s2 = "hello world";
-    let result = longest(s1, s2);
-    debug!(
-        "longest string between '{}' and '{}' is: '{}'",
-        s1, s2, result
-    );
-
     // camera::run();
+
+    if let Err(e) = requests::download_images("https://mmzztt.com/photo/") {
+        error!("fetch golang download page failed: {}", e);
+    }
+
+    if let Err(e) = requests::download_images("https://mmzztt.com/photo/top/") {
+        error!("fetch golang download page failed: {}", e);
+    }
+
+    debug!(target: "app_events", "execution cost {:.2} secs", started.elapsed().as_secs_f64());
 }
 
 fn my_area() {
     cmd::mybits();
+
+    #[cfg(target_os = "windows")]
     cmd::print_message("this is rust enabled message").unwrap();
 
     if let Err(e) = sys::battery_info() {
@@ -101,23 +116,6 @@ fn my_area() {
 
     sys::system_info();
     sys::cpu_info();
-}
-
-fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {
-    if x.len() > y.len() {
-        x
-    } else {
-        y
-    }
-}
-
-fn http_request() -> Result<(), Box<dyn std::error::Error>> {
-    let resp = reqwest::blocking::get("https://httpbin.org/ip")?;
-    debug!("resp header: {:?}", resp.headers());
-
-    let body = resp.json::<HashMap<String, String>>()?;
-    debug!("resp: {:#?}", body);
-    Ok(())
 }
 
 // fn my_addr() {
