@@ -1,3 +1,4 @@
+use log::debug;
 use raw_cpuid::{CacheType, CpuId};
 
 pub fn cpu_cache() {
@@ -121,5 +122,5 @@ pub fn cpu_info() {
         }
     });
 
-    println!("CPU Features: {}", features.join(" "));
+    debug!("CPU Features: {}", features.join(" "));
 }

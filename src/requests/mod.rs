@@ -52,9 +52,6 @@ fn build_cross_headers() -> HeaderMap {
 }
 
 pub fn download_images(site: &str) -> Result<(), Box<dyn std::error::Error>> {
-    // let site = "https://mmzztt.com/photo/top/";
-    // let site = "https://mmzztt.com/photo/";
-
     // headers
     let headers = build_cross_headers();
 
@@ -74,7 +71,7 @@ pub fn download_images(site: &str) -> Result<(), Box<dyn std::error::Error>> {
 
     let target_dir = "images";
     if let Err(e) = std::fs::create_dir_all(target_dir) {
-        println!("create '{}' failed: {}", target_dir, e);
+        error!("create '{}' failed: {}", target_dir, e);
         return Ok(());
     }
 
@@ -87,23 +84,30 @@ pub fn download_images(site: &str) -> Result<(), Box<dyn std::error::Error>> {
         //     println!("attr: {} => {}", attr_name, attr_val);
         // }
 
-        println!("[{}] {}", title, href);
+        // println!("[{}] {}", title, href);
 
-        if let Err(e) = download(title, href, target_dir) {
-            println!("download {} error: {}", title, e);
+        match download(title, href, target_dir) {
+            Err(e) => error!("{}<{}> {}", title, href, e),
+            Ok(size) => {
+                if size == 0 {
+                    error!("{} download failed", title);
+                } else {
+                    info!("{} downloaded {:.2}KB", title, size as f64 / 1024.0);
+                }
+            }
         }
     }
 
     Ok(())
 }
 
-fn download(title: &str, url: &str, target_dir: &str) -> Result<(), Box<dyn std::error::Error>> {
+fn download(title: &str, url: &str, target_dir: &str) -> Result<u64, Box<dyn std::error::Error>> {
     let file_ext = url.split(".").last().expect("cant find file ext");
     let file_path = &format!("{}/{}.{}", target_dir, title, file_ext);
 
     if std::path::Path::new(file_path).exists() {
-        warn!(target: "app_events","Skip {}, already exists!", title);
-        return Ok(());
+        let err: Box<_> = String::from("already exists").into();
+        return Err(err);
     }
 
     // headers
@@ -113,14 +117,15 @@ fn download(title: &str, url: &str, target_dir: &str) -> Result<(), Box<dyn std:
     let resp = client.get(url).headers(headers).send()?;
 
     if !resp.status().is_success() {
-        error!(target: "app_events","request failed: {:?}", resp.status());
-        // return Err("response failed");
+        let serr = format!("request failed: {:?}", resp.status());
+        let err: Box<_> = String::from(serr).into();
+        return Err(err);
     }
 
     let mut file = std::fs::File::create(file_path)?;
     let mut content = Cursor::new(resp.bytes()?);
-    std::io::copy(&mut content, &mut file)?;
-    info!(target: "app_events", "Created: {}", file_path);
-
-    Ok(())
+    match std::io::copy(&mut content, &mut file) {
+        Ok(size) => return Ok(size),
+        Err(e) => return Err(Box::new(e)),
+    }
 }

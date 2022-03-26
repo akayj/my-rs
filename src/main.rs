@@ -4,7 +4,8 @@ extern crate log;
 use std::time::Instant;
 
 use clap::Parser;
-use log::{debug, error};
+use env_logger::Target;
+use log::{debug, error, info};
 // use local_ip_address::local_ip;
 
 mod cache;
@@ -33,9 +34,13 @@ struct Args {
     /// log level
     #[clap(short, long, default_value_t = String::from("debug"))]
     log_level: String,
+
+    /// log target
+    #[clap(short = 't', long, default_value_t = String::from("stderr"))]
+    log_target: String,
 }
 
-fn init_log(log_level: &str) {
+fn init_log(log_level: &str, log_target: &str) {
     let level = match log_level {
         "trace" => log::LevelFilter::Trace,
         "debug" => log::LevelFilter::Debug,
@@ -45,11 +50,19 @@ fn init_log(log_level: &str) {
         _ => log::LevelFilter::Debug,
     };
 
+    let target = match log_target {
+        "stderr" => Target::Stderr,
+        "stdout" => Target::Stdout,
+        _ => Target::Stdout,
+    };
+
     if let Err(e) = env_logger::builder()
+        .target(target)
         // .filter_level(level)
         .filter(Some("scraper"), log::LevelFilter::Error)
         .filter(Some("html5ever"), log::LevelFilter::Error)
-        .filter(Some("app_events"), level)
+        .filter(Some("my_rs"), level)
+        .filter(Some("app_events"), log::LevelFilter::Debug)
         .try_init()
     {
         println!("init log failed: {}", e);
@@ -62,51 +75,28 @@ fn main() {
     let args = Args::parse();
     debug!("args: {:?}", args);
 
-    init_log(&args.log_level);
+    init_log(&args.log_level, &args.log_target);
 
     debug!("starting up");
+
+    full_info();
 
     // if let Err(e) = requests::http_request() {
     //     error!("failed do http request: {}", e);
     // }
 
-    // requests::parse_html();
-
-    cmd::run_shell();
-
-    my_area();
-    // my_addr();
-
-    sys::battle();
-    sys::moves();
-
-    ds::new_hashmap();
-    ds::raii();
-    ds::drop_struct_unit();
-    ds::refs();
-
-    cache::cache();
-    cache::list_dirs();
-
-    video::read_file("./Cargo.toml");
-    // video::parse_mp4("/Users/yj/我的电影/adam_project.mp4");
-
-    // camera::run();
-
-    if let Err(e) = requests::download_images("https://mmzztt.com/photo/") {
-        error!("fetch golang download page failed: {}", e);
+    let sites = vec!["https://mmzztt.com/photo/", "https://mmzztt.com/photo/top/"];
+    // let sites = vec![];
+    for site in sites {
+        if let Err(e) = requests::download_images(site) {
+            error!("download images from page `{}` failed: {}", site, e);
+        }
     }
 
-    if let Err(e) = requests::download_images("https://mmzztt.com/photo/top/") {
-        error!("fetch golang download page failed: {}", e);
-    }
-
-    debug!(target: "app_events", "execution cost {:.2} secs", started.elapsed().as_secs_f64());
+    info!(target: "app_events", "execution cost {:.2} secs", started.elapsed().as_secs_f64());
 }
 
-fn my_area() {
-    cmd::mybits();
-
+fn full_info() {
     #[cfg(target_os = "windows")]
     cmd::print_message("this is rust enabled message").unwrap();
 

@@ -1,19 +1,19 @@
-extern crate lru;
+// extern crate lru;
 
-use lru::LruCache;
+// use lru::LruCache;
 
-pub fn cache() {
-    let mut cache = LruCache::new(2);
-    cache.put("apple", 3);
-    cache.put("banana", 2);
+// pub fn cache() {
+//     let mut cache = LruCache::new(2);
+//     cache.put("apple", 3);
+//     cache.put("banana", 2);
 
-    println!("cache is : {:?}", cache);
+//     println!("cache is : {:?}", cache);
 
-    {
-        let v = cache.get_mut(&"banana").unwrap();
-        *v = 6;
-    }
-}
+//     {
+//         let v = cache.get_mut(&"banana").unwrap();
+//         *v = 6;
+//     }
+// }
 
 pub fn list_dirs() {
     let home_dir = dirs::home_dir().unwrap_or_default();

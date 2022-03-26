@@ -35,8 +35,3 @@ impl Drop for ToDrop {
         println!("ToDrop is being dropped");
     }
 }
-
-pub fn drop_struct_unit() {
-    let _x = ToDrop;
-    println!("Made a ToDrop!");
-}

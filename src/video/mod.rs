@@ -1,5 +1,6 @@
 use std::fs::{self, File};
-use std::io::BufReader;
+use std::io::prelude::Seek;
+use std::io::{BufReader, SeekFrom};
 use std::path::PathBuf;
 
 pub fn parse_mp4(path: &str) {
@@ -59,10 +60,13 @@ pub fn parse_mp4(path: &str) {
 }
 
 pub fn read_file(filename: &str) {
-    // TODO: what is the file is too big?
-    let content = fs::read_to_string(filename).expect("Something went wrong reading the file");
+    // TODO: what if file is too big?
+    // let content = fs::read_to_string(filename).expect("Something went wrong reading the file");
+    // println!("file '{}' {} bytes\n", filename, content.len());
 
-    println!("file '{}' {} bytes\n", filename, content.len());
+    let mut f = fs::File::open(filename).expect("open file failed");
+    let size = f.seek(SeekFrom::End(0)).unwrap();
+    println!("file '{}' {} bytes\n", filename, size);
 }
 
 // pub fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {

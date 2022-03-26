@@ -12,7 +12,7 @@ pub fn battery_info() -> Result<(), battery::Error> {
         println!("State: {}", battery.state().to_string());
         println!("Time to full charge: {:?}", battery.time_to_full());
         println!("State of charging: {:?}", battery.state_of_charge());
-        println!("battery: {:?}", battery);
+        // println!("battery: {:?}", battery);
         println!("");
     }
 
