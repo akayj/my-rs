@@ -75,7 +75,8 @@ pub fn download_images(site: &str) -> Result<(), Box<dyn std::error::Error>> {
         return Ok(());
     }
 
-    for elem in document.select(&selector) {
+    for (idx, elem) in (1_u32..).zip(document.select(&selector)) {
+        // for (idx, elem) in document.select(&selector).enumerate() {
         let title = elem.value().attr("alt").unwrap();
         let href = elem.value().attr("data-srcset").unwrap();
 
@@ -87,12 +88,17 @@ pub fn download_images(site: &str) -> Result<(), Box<dyn std::error::Error>> {
         // println!("[{}] {}", title, href);
 
         match download(title, href, target_dir) {
-            Err(e) => error!("{}<{}> {}", title, href, e),
+            Err(e) => error!("[#{}] {}<{}> {}", idx, title, href, e),
             Ok(size) => {
                 if size == 0 {
-                    error!("{} download failed", title);
+                    error!("[#{}] {} download failed", idx, title);
                 } else {
-                    info!("{} downloaded {:.2}KB", title, size as f64 / 1024.0);
+                    info!(
+                        "[#{}] {} downloaded {:.2}KB",
+                        idx,
+                        title,
+                        size as f64 / 1024.0
+                    );
                 }
             }
         }
