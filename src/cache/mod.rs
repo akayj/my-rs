@@ -1,19 +1,6 @@
-// extern crate lru;
-
-// use lru::LruCache;
-
-// pub fn cache() {
-//     let mut cache = LruCache::new(2);
-//     cache.put("apple", 3);
-//     cache.put("banana", 2);
-
-//     println!("cache is : {:?}", cache);
-
-//     {
-//         let v = cache.get_mut(&"banana").unwrap();
-//         *v = 6;
-//     }
-// }
+use std::fs::File;
+use std::io::{self, BufRead};
+use std::path::Path;
 
 pub fn list_dirs() {
     let home_dir = dirs::home_dir().unwrap_or_default();
@@ -37,3 +24,27 @@ pub fn list_dirs() {
         println!("download_dir: {:?}", dl_dir);
     }
 }
+
+// The output is wrapped in a Result to allow matching on errors
+// Returns an Iterator to the Reader of the lines of the file.
+pub fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
+where
+    P: AsRef<Path>,
+{
+    let file = File::open(filename)?;
+    Ok(io::BufReader::new(file).lines())
+}
+
+// pub fn lines(filename: &str) -> Vec<&str> {
+//     let mut lines_vec = vec![];
+
+//     if let Ok(lines) = read_lines(filename) {
+//         for line in lines {
+//             if let Ok(li) = line {
+//                 lines_vec.push(li.clone().as_str());
+//             }
+//         }
+//     }
+
+//     lines_vec
+// }

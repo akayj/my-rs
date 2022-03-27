@@ -36,6 +36,11 @@ tokio = { version = "1", features = ["full"] }
 # druid = "0.7.0"
 # druid = { git = "https://github.com/linebender/druid.git" }
 
+notify-rust = "4"
+
+# Game Dev
+# bevy = { version = "0.6.0", features = ["dynamic"] }
+
 [target.'cfg(unix)'.dependencies]
 nix = "0.23.1"
 

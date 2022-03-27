@@ -13,6 +13,7 @@ mod cache;
 mod camera;
 mod cmd;
 mod ds;
+mod notify;
 mod rand;
 mod requests;
 mod sys;
@@ -38,6 +39,10 @@ struct Args {
     /// log target
     #[clap(short = 't', long, default_value_t = String::from("stderr"))]
     log_target: String,
+
+    /// site file
+    #[clap(short, long, default_value_t = String::from("sites"))]
+    site: String,
 }
 
 fn init_log(log_level: &str, log_target: &str) {
@@ -85,11 +90,23 @@ fn main() {
     //     error!("failed do http request: {}", e);
     // }
 
-    let sites = vec!["https://mmzztt.com/photo/", "https://mmzztt.com/photo/top/"];
-    // let sites = vec![];
+    let site_file = args.site;
+    let mut sites = vec![];
+    if let Ok(lines) = cache::read_lines(site_file) {
+        for line in lines {
+            if let Ok(site) = line {
+                println!("site: {}", site);
+                sites.push(site);
+            }
+        }
+    }
+
     for site in sites {
-        if let Err(e) = requests::download_images(site) {
+        if let Err(e) = requests::download_images(&site) {
             error!("download images from page `{}` failed: {}", site, e);
+        } else {
+            let s = format!("download {} finished", site);
+            let _ = notify::notice(&s);
         }
     }
 
