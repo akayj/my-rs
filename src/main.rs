@@ -1,7 +1,8 @@
 // #[macro_use]
 extern crate log;
 
-use std::time::Instant;
+use std::thread;
+use std::time::{Duration, Instant};
 
 use clap::Parser;
 use env_logger::Target;
@@ -9,12 +10,8 @@ use log::{debug, error, info};
 // use local_ip_address::local_ip;
 
 mod cache;
-#[cfg(target_os = "macos")]
-mod camera;
-mod cmd;
-mod ds;
+mod ffi;
 mod notify;
-mod rand;
 mod requests;
 mod sys;
 mod video;
@@ -90,33 +87,53 @@ fn main() {
     //     error!("failed do http request: {}", e);
     // }
 
-    let site_file = args.site;
+    let site_file = &args.site;
     let mut sites = vec![];
     if let Ok(lines) = cache::read_lines(site_file) {
         for line in lines {
             if let Ok(site) = line {
-                println!("site: {}", site);
-                sites.push(site);
+                if !site.starts_with("#") {
+                    println!("site: {}", site);
+                    sites.push(site);
+                }
             }
         }
     }
 
-    for site in sites {
-        if let Err(e) = requests::download_images(&site) {
-            error!("download images from page `{}` failed: {}", site, e);
-        } else {
-            let s = format!("download {} finished", site);
-            let _ = notify::notice(&s);
+    // for site in &sites {
+    //     if let Err(e) = requests::download_images(site) {
+    //         error!("download images from page `{}` failed: {}", site, e);
+    //     } else {
+    //         let s = format!("download {} finished", site);
+    //         let _ = notify::notice(&s);
+    //     }
+    // }
+
+    let sites = sites;
+    let handler = thread::spawn(move || {
+        for ref site in sites {
+            if let Err(e) = requests::download_images(site) {
+                error!("download images from page `{}` failed: {}", site, e);
+            } else {
+                let s = format!("download {} finished", site);
+                let _ = notify::notice(&s);
+            }
+            thread::sleep(Duration::from_millis(10));
         }
-    }
+    });
+    handler.join().unwrap();
+
+    sys::get_cpu_total();
+
+    let z = ffi::Complex { re: -1., im: 0. };
+    let z_sqrt = unsafe { ffi::csqrtf(z) };
+    println!("the square root of {:?} is {:?}", z, z_sqrt);
+    println!("cos({:?}) = {:?}", z, ffi::cos(z));
 
     info!(target: "app_events", "execution cost {:.2} secs", started.elapsed().as_secs_f64());
 }
 
 fn full_info() {
-    #[cfg(target_os = "windows")]
-    cmd::print_message("this is rust enabled message").unwrap();
-
     if let Err(e) = sys::battery_info() {
         error!("error: {}", e);
     }

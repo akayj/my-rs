@@ -1,42 +1,8 @@
-use std::collections::HashMap;
 use std::io::Cursor;
 
-use log::{debug, error, info, warn};
+use log::{error, info};
 use reqwest::header::{HeaderMap, HeaderValue, REFERER, USER_AGENT};
 use scraper::{Html, Selector};
-use serde::Deserialize;
-
-#[derive(Debug, Deserialize)]
-struct HTTPBinPostResponse {
-    origin: String,
-    url: String,
-    headers: HashMap<String, String>,
-}
-
-pub fn http_request() -> Result<(), Box<dyn std::error::Error>> {
-    let mut map = HashMap::new();
-    map.insert("lang", "rust");
-    map.insert("body", "json");
-
-    // Get JSON:
-    // let resp = reqwest::blocking::get("https://httpbin.org/ip")?;
-
-    // POST JSON:
-    let client = reqwest::blocking::Client::new();
-    let resp = client.post("http://httpbin.org/post").json(&map).send()?;
-
-    debug!("resp header: {:?}", resp.headers());
-
-    // let body = resp.text()?;
-    // let body = resp.json::<HashMap<String, String>>()?;
-
-    let body = resp.json::<HTTPBinPostResponse>()?;
-    debug!("resp: {:#?}", body);
-    debug!("resp.header: {:#?}", body.headers);
-    debug!("resp.origin: {}", body.origin);
-    debug!("resp.url: {}", body.url);
-    Ok(())
-}
 
 fn build_cross_headers() -> HeaderMap {
     let mut headers = HeaderMap::new();
@@ -60,8 +26,9 @@ pub fn download_images(site: &str) -> Result<(), Box<dyn std::error::Error>> {
 
     // let resp = reqwest::blocking::get(site)?;
     if !resp.status().is_success() {
-        panic!("request failed: {:?}", resp.status());
-        // return Err("response failed");
+        let serr = format!("request failed: {:?}", resp.status());
+        let err: Box<_> = String::from(serr).into();
+        return Err(err);
     }
 
     let text = resp.text()?;
@@ -71,8 +38,9 @@ pub fn download_images(site: &str) -> Result<(), Box<dyn std::error::Error>> {
 
     let target_dir = "images";
     if let Err(e) = std::fs::create_dir_all(target_dir) {
-        error!("create '{}' failed: {}", target_dir, e);
-        return Ok(());
+        let error_info = format!("create '{}' failed: {}", target_dir, e);
+        let e: Box<_> = String::from(error_info).into();
+        return Err(e);
     }
 
     for (idx, elem) in (1_u32..).zip(document.select(&selector)) {
