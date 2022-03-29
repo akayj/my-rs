@@ -2,7 +2,7 @@
 
 void foo()
 {
-    printf("it's from c, rename it\n");
+    printf("it's foo from C!\n");
 }
 
 int32_t bar(int32_t x)

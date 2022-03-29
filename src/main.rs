@@ -6,10 +6,11 @@ use std::time::{Duration, Instant};
 
 use clap::Parser;
 use env_logger::Target;
-use log::{debug, error, info};
+// use log::{debug, error, info};
 // use local_ip_address::local_ip;
 
 mod cache;
+mod error;
 mod ffi;
 mod notify;
 mod requests;
@@ -75,16 +76,16 @@ fn main() {
     let started = Instant::now();
 
     let args = Args::parse();
-    debug!("args: {:?}", args);
+    log::debug!("args: {:?}", args);
 
     init_log(&args.log_level, &args.log_target);
 
-    debug!("starting up");
+    log::debug!("starting up");
 
     full_info();
 
     // if let Err(e) = requests::http_request() {
-    //     error!("failed do http request: {}", e);
+    //     log::error!("failed do http request: {}", e);
     // }
 
     let site_file = &args.site;
@@ -102,7 +103,7 @@ fn main() {
 
     // for site in &sites {
     //     if let Err(e) = requests::download_images(site) {
-    //         error!("download images from page `{}` failed: {}", site, e);
+    //         log::error!("download images from page `{}` failed: {}", site, e);
     //     } else {
     //         let s = format!("download {} finished", site);
     //         let _ = notify::notice(&s);
@@ -113,7 +114,7 @@ fn main() {
     let handler = thread::spawn(move || {
         for ref site in sites {
             if let Err(e) = requests::download_images(site) {
-                error!("download images from page `{}` failed: {}", site, e);
+                log::error!("download images from page `{}` failed: {}", site, e);
             } else {
                 let s = format!("download {} finished", site);
                 let _ = notify::notice(&s);
@@ -121,6 +122,7 @@ fn main() {
             thread::sleep(Duration::from_millis(10));
         }
     });
+
     handler.join().unwrap();
 
     sys::get_cpu_total();
@@ -130,12 +132,12 @@ fn main() {
     println!("the square root of {:?} is {:?}", z, z_sqrt);
     println!("cos({:?}) = {:?}", z, ffi::cos(z));
 
-    info!(target: "app_events", "execution cost {:.2} secs", started.elapsed().as_secs_f64());
+    log::info!(target: "app_events", "execution cost {:.2} secs", started.elapsed().as_secs_f64());
 }
 
 fn full_info() {
     if let Err(e) = sys::battery_info() {
-        error!("error: {}", e);
+        log::error!("error: {}", e);
     }
 
     sys::system_info();
