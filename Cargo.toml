@@ -25,7 +25,6 @@ scraper = "0.12.0"
 serde = { version = "1.0.136", features = ["derive"] }
 
 # lru = "0.7.3"
-dirs = "4.0"
 
 mp4parse = "0.12.0"
 # rand = "0.8.5"
@@ -33,6 +32,7 @@ mp4parse = "0.12.0"
 
 log = "0.4.14"
 env_logger = "0.9.0"
+chrono = "0.4"
 
 reqwest = { version = "0.11", features = ["blocking", "json"] }
 tokio = { version = "1", features = ["full"] }

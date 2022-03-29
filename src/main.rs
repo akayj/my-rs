@@ -1,21 +1,18 @@
 // #[macro_use]
 extern crate log;
 
-use std::thread;
-use std::time::{Duration, Instant};
-
-use clap::Parser;
-use env_logger::Target;
-// use log::{debug, error, info};
-// use local_ip_address::local_ip;
-
 mod cache;
-mod error;
 mod ffi;
 mod notify;
 mod requests;
 mod sys;
-mod video;
+
+// use std::io::Write;
+use std::time::Instant;
+
+// use chrono::Local;
+use clap::Parser;
+use env_logger::Target;
 
 #[derive(Parser, Debug)]
 #[clap(
@@ -62,13 +59,22 @@ fn init_log(log_level: &str, log_target: &str) {
     if let Err(e) = env_logger::builder()
         .target(target)
         // .filter_level(level)
-        .filter(Some("scraper"), log::LevelFilter::Error)
-        .filter(Some("html5ever"), log::LevelFilter::Error)
+        // .filter(Some("scraper"), log::LevelFilter::Error)
+        // .filter(Some("html5ever"), log::LevelFilter::Error)
+        // .format(|buf, record| {
+        //     writeln!(
+        //         buf,
+        //         "{} [{}] {}",
+        //         Local::now().format("%Y-%m-%d %H:%M:%S%.3f"),
+        //         record.level(),
+        //         record.args()
+        //     )
+        // })
         .filter(Some("my_rs"), level)
         .filter(Some("app_events"), log::LevelFilter::Debug)
         .try_init()
     {
-        println!("init log failed: {}", e);
+        println!("** init log failed: {} **", e);
     }
 }
 
@@ -84,53 +90,35 @@ fn main() {
 
     full_info();
 
-    // if let Err(e) = requests::http_request() {
-    //     log::error!("failed do http request: {}", e);
-    // }
-
     let site_file = &args.site;
     let mut sites = vec![];
-    if let Ok(lines) = cache::read_lines(site_file) {
-        for line in lines {
-            if let Ok(site) = line {
-                if !site.starts_with("#") {
-                    println!("site: {}", site);
-                    sites.push(site);
+    match cache::read_lines(site_file) {
+        Ok(lines) => {
+            // read site list
+            for line in lines {
+                if let Ok(site) = line {
+                    if !site.starts_with("#") {
+                        log::debug!("found site: {}", site);
+                        sites.push(site);
+                    } else {
+                        log::warn!("ignore site: {}", site);
+                    }
+                }
+            }
+
+            // handle every site
+            for ref site in sites {
+                if let Err(e) = requests::download_images(site) {
+                    log::error!("download images from page `{}` failed: {}", site, e);
+                } else {
+                    let s = format!("download {} finished", site);
+                    let _ = notify::notice(&s);
                 }
             }
         }
+
+        Err(e) => log::error!("read file `{}` failed: {}", site_file, e),
     }
-
-    // for site in &sites {
-    //     if let Err(e) = requests::download_images(site) {
-    //         log::error!("download images from page `{}` failed: {}", site, e);
-    //     } else {
-    //         let s = format!("download {} finished", site);
-    //         let _ = notify::notice(&s);
-    //     }
-    // }
-
-    let sites = sites;
-    let handler = thread::spawn(move || {
-        for ref site in sites {
-            if let Err(e) = requests::download_images(site) {
-                log::error!("download images from page `{}` failed: {}", site, e);
-            } else {
-                let s = format!("download {} finished", site);
-                let _ = notify::notice(&s);
-            }
-            thread::sleep(Duration::from_millis(10));
-        }
-    });
-
-    handler.join().unwrap();
-
-    sys::get_cpu_total();
-
-    let z = ffi::Complex { re: -1., im: 0. };
-    let z_sqrt = unsafe { ffi::csqrtf(z) };
-    println!("the square root of {:?} is {:?}", z, z_sqrt);
-    println!("cos({:?}) = {:?}", z, ffi::cos(z));
 
     log::info!(target: "app_events", "execution cost {:.2} secs", started.elapsed().as_secs_f64());
 }
@@ -143,10 +131,3 @@ fn full_info() {
     sys::system_info();
     sys::cpu_info();
 }
-
-// fn my_addr() {
-//     match local_ip() {
-//         Ok(ip) => println!("This is my local IP address: {:?}", ip),
-//         _ => println!("local IP is unknown."),
-//     }
-// }
