@@ -1,3 +1,5 @@
+pub mod zxzj;
+
 use std::io::Cursor;
 
 use anyhow::{anyhow, Result};
@@ -12,8 +14,11 @@ fn build_cross_headers() -> HeaderMap {
         HeaderValue::from_static("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.83 Safari/537.36"));
     headers.insert(
         REFERER,
-        HeaderValue::from_static("https://mmzztt.com/photo/"),
+        // HeaderValue::from_static("https://mmzztt.com/photo/"),
+        HeaderValue::from_static("https://www.douban.com/"),
     );
+
+    // headers.insert(ACCEPT, HeaderValue::from_static("text/html;image/webp"));
 
     headers
 }

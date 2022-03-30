@@ -120,7 +120,16 @@ fn main() {
         Err(e) => log::error!("read file `{}` failed: {}", site_file, e),
     }
 
-    log::info!(target: "app_events", "execution cost {:.2} secs", started.elapsed().as_secs_f64());
+    // match requests::zxzj::fetch_movie_links("https://movie.douban.com/chart") {
+    //     Ok(_) => {}
+    //     Err(e) => log::error!("an error: {:?}", e),
+    // }
+
+    requests::zxzj::fetch_movie_ads_image("https://movie.douban.com/chart");
+
+    log::info!(target: "app_events",
+	       "execution cost {:.2} secs",
+	       started.elapsed().as_secs_f64());
 }
 
 fn full_info() {
