@@ -40,6 +40,7 @@ pub fn fetch_movie_links(site: &str) -> Result<Vec<LinkMeta>> {
     Ok(links)
 }
 
+// fetch douban top movies links
 pub fn fetch_movie_ads_image(site: &str) {
     match fetch_movie_links(site) {
         Ok(links) => {
@@ -48,7 +49,6 @@ pub fn fetch_movie_ads_image(site: &str) {
             }
 
             if let Err(e) = std::fs::create_dir_all(super::IMAGE_DIR) {
-                // return Err(anyhow!("create '{}' failed: {}", super::IMAGE_DIR, e));
                 log::error!("create '{}' failed: {}", super::IMAGE_DIR, e);
                 return;
             }

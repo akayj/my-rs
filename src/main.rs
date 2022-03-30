@@ -127,6 +127,8 @@ fn main() {
 
     requests::zxzj::fetch_movie_ads_image("https://movie.douban.com/chart");
 
+    requests::books::my_from();
+
     log::info!(target: "app_events",
 	       "execution cost {:.2} secs",
 	       started.elapsed().as_secs_f64());
