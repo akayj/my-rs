@@ -1,4 +1,4 @@
-pub mod books;
+pub mod traits;
 pub mod zxzj;
 
 use std::io::Cursor;

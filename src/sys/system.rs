@@ -1,4 +1,3 @@
-use log::debug;
 use sysinfo::{DiskExt, System, SystemExt};
 
 // const KB: u64 = 1 << 10;
@@ -11,9 +10,9 @@ pub fn system_info() {
     let mut sys = System::new_all();
     sys.refresh_all();
 
-    debug!("=> disks:");
+    log::debug!("=> disks:");
     for disk in sys.disks() {
-        debug!(
+        log::debug!(
             // "[{:?}] Type: {:?}, Total: {:.2} GB, Free: {:.2} GB",
             // disk.name(),
             "Type: {:?}, Total: {:.2} GB, Free: {:.2} GB",

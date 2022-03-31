@@ -127,7 +127,7 @@ fn main() {
 
     requests::zxzj::fetch_movie_ads_image("https://movie.douban.com/chart");
 
-    requests::books::my_from();
+    requests::traits::my_from();
 
     log::info!(target: "app_events",
 	       "execution cost {:.2} secs",
