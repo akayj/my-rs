@@ -32,13 +32,13 @@ pub fn system_info() {
     //     );
     // }
 
-    debug!("=> system:");
-    debug!(
+    log::debug!("=> system:");
+    log::debug!(
         "total memory: {:.2} GB, used mem: {:.2} GB",
         human_size(sys.total_memory(), MB),
         human_size(sys.used_memory(), MB),
     );
-    debug!(
+    log::debug!(
         "total swap: {:.2} GB, used: {:.2} GB",
         human_size(sys.total_swap(), MB),
         human_size(sys.used_swap(), MB),

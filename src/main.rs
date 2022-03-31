@@ -7,12 +7,13 @@ mod notify;
 mod requests;
 mod sys;
 
-// use std::io::Write;
 use std::time::Instant;
 
 // use chrono::Local;
 use clap::Parser;
 use env_logger::Target;
+
+use crate::requests::{Douban, Downloader, HotGril};
 
 #[derive(Parser, Debug)]
 #[clap(
@@ -108,7 +109,8 @@ fn main() {
 
             // handle every site
             for ref site in sites {
-                if let Err(e) = requests::download_images(site) {
+                let hot = HotGril(site.to_string(), String::from("images/hot"));
+                if let Err(e) = hot.download() {
                     log::error!("download images from page `{}` failed: {}", site, e);
                 } else {
                     let s = format!("download {} finished", site);
@@ -120,14 +122,12 @@ fn main() {
         Err(e) => log::error!("read file `{}` failed: {}", site_file, e),
     }
 
-    // match requests::zxzj::fetch_movie_links("https://movie.douban.com/chart") {
-    //     Ok(_) => {}
-    //     Err(e) => log::error!("an error: {:?}", e),
-    // }
-
-    requests::zxzj::fetch_movie_ads_image("https://movie.douban.com/chart");
-
-    requests::traits::my_from();
+    // Douban
+    let website = Douban(
+        String::from("https://movie.douban.com/chart"),
+        String::from("images/douban"),
+    );
+    let _ = website.download();
 
     log::info!(target: "app_events",
 	       "execution cost {:.2} secs",
