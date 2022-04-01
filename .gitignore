@@ -1,5 +1,7 @@
-target/
-
-images/
+.DS_Store
 
 sites
+
+target/
+images/
+
