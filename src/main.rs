@@ -2,6 +2,7 @@
 extern crate log;
 
 mod cache;
+mod error;
 mod ffi;
 mod notify;
 mod requests;
@@ -128,6 +129,8 @@ fn main() {
         String::from("images/douban"),
     );
     let _ = website.download();
+
+    error::error_print();
 
     log::info!(target: "app_events",
 	       "execution cost {:.2} secs",

@@ -50,6 +50,41 @@ fn download(title: &str, url: &str, target_dir: &str) -> Result<i64> {
 //     HotGril,
 //     Null,
 // }
+
+pub enum SiteType {
+    Google,
+    Baidu,
+    Alibaba,
+    Facebook,
+    Twitter,
+    Douban,
+    HotGrils,
+}
+
+impl SiteType {
+    pub fn from_string(s: &str) -> Option<Self> {
+        match s {
+            "google" => Some(Self::Google),
+            "baidu" => Some(Self::Baidu),
+            "alibaba" => Some(Self::Alibaba),
+            "facebook" => Some(Self::Facebook),
+            "twitter" => Some(Self::Twitter),
+            "douban" => Some(Self::Douban),
+            "hot" => Some(Self::HotGrils),
+            _ => None,
+        }
+    }
+}
+
+// impl<T> Downloader for T
+// where
+//     T: SiteType,
+// {
+//     fn download(&self) -> Result<()> {
+//         Ok(())
+//     }
+// }
+
 pub struct Douban(pub String, pub String);
 pub struct HotGril(pub String, pub String);
 
