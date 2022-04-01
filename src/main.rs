@@ -139,9 +139,9 @@ fn main() {
 }
 
 fn full_info() {
-    if let Err(e) = sys::battery_info() {
-        log::error!("error: {}", e);
-    }
+    // if let Err(e) = sys::battery_info() {
+    //     log::error!("error: {}", e);
+    // }
 
     sys::system_info();
     sys::cpu_info();

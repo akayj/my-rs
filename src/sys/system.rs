@@ -4,7 +4,7 @@ use sysinfo::{DiskExt, System, SystemExt};
 const MB: u64 = 1 << 20;
 // const GB: u64 = 1 << 30;
 
-const GIB: u64 = 1000_000_000;
+const GIB: u64 = 1_000_000_000;
 
 pub fn system_info() {
     let mut sys = System::new_all();
@@ -13,8 +13,6 @@ pub fn system_info() {
     log::debug!("=> disks:");
     for disk in sys.disks() {
         log::debug!(
-            // "[{:?}] Type: {:?}, Total: {:.2} GB, Free: {:.2} GB",
-            // disk.name(),
             "Type: {:?}, Total: {:.2} GB, Free: {:.2} GB",
             disk.type_(),
             human_size(disk.total_space(), GIB),
