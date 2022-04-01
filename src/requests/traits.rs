@@ -2,6 +2,7 @@ use std::convert::From;
 
 #[derive(Debug)]
 struct Number {
+    #[allow(dead_code)]
     value: i32,
 }
 
@@ -36,32 +37,6 @@ pub fn my_from() {
     empty.double_drop(null);
 }
 
-trait Person {
-    fn name(&self) -> String;
-}
-
-trait Student: Person {
-    fn university(&self) -> String;
-}
-
-trait Programmer {
-    fn fav_language(&self) -> String;
-}
-
-trait CompSciStudent: Programmer + Student {
-    fn git_username(&self) -> String;
-}
-
-fn comp_sci_student_greeting(student: &dyn CompSciStudent) -> String {
-    format!(
-        "My name is {} and I attend {}. My favorite language is {}. My Git username is {}",
-        student.name(),
-        student.university(),
-        student.fav_language(),
-        student.git_username()
-    )
-}
-
 fn make_adder_function(y: i32) -> impl Fn(i32) -> i32 {
     move |x: i32| x + y
 }
@@ -72,6 +47,6 @@ pub fn make_adder() {
 }
 
 // 还可以使用 `impl Trait` 返回使用 `map` 或 `filter` 闭包的迭代器
-fn double_positives<'a>(numbers: &'a Vec<i32>) -> impl Iterator<Item = i32> + 'a {
+fn double_positives(numbers: &[i32]) -> impl Iterator<Item = i32> + '_ {
     numbers.iter().filter(|x| x > &&0).map(|x| x * 2)
 }

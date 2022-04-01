@@ -43,14 +43,15 @@ struct Args {
 }
 
 fn init_log(log_level: &str, log_target: &str) {
-    let level = match log_level {
-        "trace" => log::LevelFilter::Trace,
-        "debug" => log::LevelFilter::Debug,
-        "info" => log::LevelFilter::Info,
-        "warn" => log::LevelFilter::Warn,
-        "error" => log::LevelFilter::Error,
-        _ => log::LevelFilter::Debug,
-    };
+    use std::str::FromStr;
+
+    let level = log::LevelFilter::from_str(log_level).unwrap_or_else(|_| {
+        println!(
+            "unknown log level: {}, use default *DEBUG* level",
+            log_level
+        );
+        log::LevelFilter::Debug
+    });
 
     let target = match log_target {
         "stderr" => Target::Stderr,

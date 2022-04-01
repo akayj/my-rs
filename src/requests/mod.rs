@@ -20,7 +20,7 @@ fn build_cross_headers(refer: &str) -> HeaderMap {
 }
 
 fn download(title: &str, url: &str, target_dir: &str) -> Result<i64> {
-    let file_ext = url.split(".").last().expect("cant find file ext");
+    let file_ext = url.split('.').last().expect("cant find file ext");
     let file_path = &format!("{}/{}.{}", target_dir, title, file_ext);
 
     if std::path::Path::new(file_path).exists() {
@@ -40,8 +40,8 @@ fn download(title: &str, url: &str, target_dir: &str) -> Result<i64> {
     let mut file = std::fs::File::create(file_path)?;
     let mut content = Cursor::new(resp.bytes()?);
     match std::io::copy(&mut content, &mut file) {
-        Ok(size) => return Ok(size as i64),
-        Err(e) => return Err(anyhow!(e)),
+        Ok(size) => Ok(size as i64),
+        Err(e) => Err(anyhow!(e))
     }
 }
 
@@ -51,6 +51,7 @@ fn download(title: &str, url: &str, target_dir: &str) -> Result<i64> {
 //     Null,
 // }
 
+#[allow(dead_code)]
 pub enum SiteType {
     Google,
     Baidu,
@@ -62,6 +63,7 @@ pub enum SiteType {
 }
 
 impl SiteType {
+    #[allow(dead_code)]
     pub fn from_string(s: &str) -> Option<Self> {
         match s {
             "google" => Some(Self::Google),
