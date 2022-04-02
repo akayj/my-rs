@@ -40,12 +40,19 @@ pub fn fetch_movie_links(site: &str) -> Result<Vec<LinkMeta>> {
     Ok(links)
 }
 
+impl Douban{
+    #[allow(dead_code)]
+    pub fn new(site: &str, target_dir: &str) -> Self {
+	Self(String::from(site),  String::from(target_dir))
+    }
+}
+
 // fetch douban top movies links
 impl Downloader for Douban {
     fn download(&self) -> Result<()> {
         match fetch_movie_links(self.0.as_str()) {
             Ok(links) => {
-                if links.len() == 0 {
+                if links.is_empty() {
                     return Ok(());
                 }
 

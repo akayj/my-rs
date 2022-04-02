@@ -95,23 +95,22 @@ fn main() {
 
     let site_file = &args.site;
     let mut sites = vec![];
+
     match cache::read_lines(site_file) {
         Ok(lines) => {
             // read site list
-            for line in lines {
-                if let Ok(site) = line {
-                    if !site.starts_with("#") {
-                        log::debug!("found site: {}", site);
-                        sites.push(site);
-                    } else {
-                        log::warn!("ignore site: {}", site);
-                    }
+            for line in lines.into_iter().flatten() {
+                if !line.starts_with('#') {
+                    log::debug!("found site: {}", line);
+                    sites.push(line);
+                } else {
+                    log::warn!("ignore site: {}", line);
                 }
             }
 
             // handle every site
             for ref site in sites {
-                let hot = HotGril(site.to_string(), String::from("images/hot"));
+		let hot = HotGril::new(site, "images/hot");
                 if let Err(e) = hot.download() {
                     log::error!("download images from page `{}` failed: {}", site, e);
                 } else {
@@ -125,10 +124,7 @@ fn main() {
     }
 
     // Douban
-    let website = Douban(
-        String::from("https://movie.douban.com/chart"),
-        String::from("images/douban"),
-    );
+    let website = Douban::new("https://movie.douban.com/chart", "images/douban");
     let _ = website.download();
 
     error::error_print();

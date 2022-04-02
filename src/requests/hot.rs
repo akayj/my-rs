@@ -3,6 +3,12 @@ use scraper::{Html, Selector};
 
 use super::{build_cross_headers, download, Downloader, HotGril};
 
+impl HotGril {
+    pub fn new(site: &str, target_dir: &str) -> Self {
+        Self(String::from(site), String::from(target_dir))
+    }
+}
+
 impl Downloader for HotGril {
     fn download(&self) -> Result<()> {
         // headers
