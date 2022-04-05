@@ -49,7 +49,8 @@ anyhow = "1.0"
 # bevy = { version = "0.6.0", features = ["dynamic"] }
 
 [target.'cfg(unix)'.dependencies]
-nix = "0.23.1"
+nix = "0.23"
+sysctl = "0.4"
 
 # [target.'cfg(target_os="macos")'.dependencies]
 # cocoa = "0.24.0"

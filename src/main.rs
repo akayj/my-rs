@@ -124,10 +124,12 @@ fn main() {
     }
 
     // Douban
-    let website = Douban::new("https://movie.douban.com/chart", "images/douban");
-    let _ = website.download();
-
-    error::error_print();
+    let url = "https://movie.douban.com/j/search_subjects?type=tv&tag=美剧&page_limit=50&page_start=0";
+    // let url = "https://movie.douban.com/j/search_subjects?type=movie&tag=热门&page_limit=50&page_start=0";
+    let website = Douban::new(url, "images/douban");
+    if let Err(e) = website.download() {
+	log::error!("{}", e);
+    }
 
     log::info!(target: "app_events",
 	       "execution cost {:.2} secs",
@@ -141,4 +143,5 @@ fn full_info() {
 
     sys::system_info();
     sys::cpu_info();
+    sys::print_mem();
 }
