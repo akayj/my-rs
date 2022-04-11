@@ -1,9 +1,11 @@
 // #[macro_use]
 extern crate log;
 
+mod asyncs;
 mod cache;
 mod error;
 mod ffi;
+mod lifetime;
 mod notify;
 mod requests;
 mod sys;
@@ -81,6 +83,8 @@ fn init_log(log_level: &str, log_target: &str) {
     }
 }
 
+// #[tokio::main]
+// async fn main() {
 fn main() {
     let started = Instant::now();
 
@@ -92,6 +96,8 @@ fn main() {
     log::debug!("starting up");
 
     full_info();
+
+    // models::connect().await;
 
     let site_file = &args.site;
     let mut sites = vec![];
@@ -110,7 +116,7 @@ fn main() {
 
             // handle every site
             for ref site in sites {
-		let hot = HotGril::new(site, "images/hot");
+                let hot = HotGril::new(site, "images/hot");
                 if let Err(e) = hot.download() {
                     log::error!("download images from page `{}` failed: {}", site, e);
                 } else {
@@ -124,12 +130,19 @@ fn main() {
     }
 
     // Douban
-    let url = "https://movie.douban.com/j/search_subjects?type=tv&tag=美剧&page_limit=50&page_start=0";
+    let url =
+        "https://movie.douban.com/j/search_subjects?type=tv&tag=美剧&page_limit=50&page_start=0";
     // let url = "https://movie.douban.com/j/search_subjects?type=movie&tag=热门&page_limit=50&page_start=0";
     let website = Douban::new(url, "images/douban");
     if let Err(e) = website.download() {
-	log::error!("{}", e);
+        log::error!("{}", e);
     }
+
+    lifetime::life_check();
+    lifetime::traits::main();
+    lifetime::bounds::main();
+
+    asyncs::main();
 
     log::info!(target: "app_events",
 	       "execution cost {:.2} secs",

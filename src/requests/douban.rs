@@ -71,14 +71,13 @@ pub fn fetch_movie_links_json(site: &str) -> Result<Movies> {
 //     Ok(links)
 // }
 
-
 // fetch douban top movies links
+
 impl Downloader for Douban {
     fn download(&self) -> Result<()> {
         match fetch_movie_links_json(self.0.as_str()) {
-            Ok(movies) => {
-		let links = movies.subjects;
-                if links.is_empty() {
+            Ok(Movies { subjects }) => {
+                if subjects.is_empty() {
                     return Err(anyhow!("no link found"));
                 }
 
@@ -87,22 +86,45 @@ impl Downloader for Douban {
                     return Err(anyhow!("create '{}' failed: {}", self.1, e));
                 }
 
-                for link in &links {
-		    let rate = link.rate.parse::<f64>().unwrap_or(0_f64);
+                let mut index = 1u8;
+                let mut total_size = 0_i64;
+                for link in &subjects {
+                    let rate = link.rate.parse::<f64>().unwrap_or(0_f64);
 
-		    if rate < 6.0 {
-			continue;
-		    }
+                    if rate < 7.0 {
+                        log::warn!("{} rate is too low {}, ignore it", link.title, rate);
+                        continue;
+                    }
 
                     match super::download(&link.title, &link.cover, self.1.as_str()) {
                         Ok(0) => log::error!("download `{}` failed", link.cover),
-                        Ok(-1) => log::warn!("{} already download", link.title),
+                        Ok(-1) => log::debug!("{} already download", link.title),
                         Ok(bytes) => {
-                            log::info!("[{} rate: {}] {:.1} KiB <{}>", link.title, rate, bytes as f64 / 1024.0, link.url)
+                            log::info!(
+                                "[#{}] [{} rate: {}] {:.1} KiB <{}>",
+                                index,
+                                link.title,
+                                rate,
+                                bytes as f64 / 1024.0,
+                                link.url
+                            );
+
+                            index += 1;
+                            total_size += bytes;
                         }
 
-                        Err(e) => log::error!("download image {} failed: {}", link.cover, e),
+                        Err(e) => {
+                            log::error!("download image {} failed: {}", link.cover, e);
+                        }
                     }
+                }
+
+                if index > 1 {
+                    log::info!(
+                        "已下载 {} 张图片， 共计 {:.2} MiB",
+                        index - 1,
+                        total_size as f64 / 1_000_000.0
+                    );
                 }
 
                 Ok(())

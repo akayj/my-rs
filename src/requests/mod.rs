@@ -11,7 +11,15 @@ fn build_cross_headers(refer: &str) -> HeaderMap {
     let mut headers = HeaderMap::new();
     headers.insert(
         USER_AGENT,
-        HeaderValue::from_static("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.83 Safari/537.36"));
+        // Chrome:
+        // "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.60 Safari/537.36"
+        // Firefox:
+        // "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:98.0) Gecko/20100101 Firefox/98.0"
+        HeaderValue::from_static(
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:98.0) Gecko/20100101 Firefox/98.0",
+        ),
+    );
+
     headers.insert(REFERER, HeaderValue::from_str(refer).unwrap());
 
     // headers.insert(ACCEPT, HeaderValue::from_static("text/html;image/webp"));
@@ -41,7 +49,7 @@ fn download(title: &str, url: &str, target_dir: &str) -> Result<i64> {
     let mut content = Cursor::new(resp.bytes()?);
     match std::io::copy(&mut content, &mut file) {
         Ok(size) => Ok(size as i64),
-        Err(e) => Err(anyhow!(e))
+        Err(e) => Err(anyhow!(e)),
     }
 }
 
