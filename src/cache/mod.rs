@@ -4,7 +4,7 @@ use std::path::Path;
 
 // The output is wrapped in a Result to allow matching on errors
 // Returns an Iterator to the Reader of the lines of the file.
-pub fn read_lines<P: AsRef<Path>>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
+pub fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
 where
     P: AsRef<Path>,
 {
@@ -25,3 +25,15 @@ where
 
 //     lines_vec
 // }
+
+fn is_hello<T: AsRef<str>>(s: T) {
+    assert_eq!("hello", s.as_ref());
+}
+
+pub fn ref_main() {
+    let s = "hello";
+    is_hello(s);
+
+    let s = "hello".to_string();
+    is_hello(s);
+}

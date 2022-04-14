@@ -1,4 +1,4 @@
-use std::fmt;
+use std::fmt::{Debug, Formatter, Result};
 
 #[repr(C)]
 #[derive(Clone, Copy)]
@@ -7,8 +7,8 @@ pub struct Complex {
     pub im: f32,
 }
 
-impl fmt::Debug for Complex {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+impl Debug for Complex {
+    fn fmt(&self, f: &mut Formatter) -> Result {
         if self.im < 0. {
             write!(f, "{}-{}i", self.re, -self.im)
         } else {

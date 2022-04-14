@@ -14,28 +14,10 @@ impl fmt::Display for EmptyVec {
 
 impl error::Error for EmptyVec {}
 
-// fn double_first(vec: Vec<&str>) -> Result<i32> {
-//     vec.first()
-//         // Change the error to our new type.
-//         .ok_or_else(|| EmptyVec.into())
-//         .and_then(|s| {
-//             s.parse::<i32>()
-//                 // Update to the new error type here also.
-//                 .map_err(|e| e.into())
-//                 .map(|i| 2 * i)
-//         })
-// }
-
 fn double_first(vec: Vec<&str>) -> Result<i32> {
     let first = vec.first().ok_or(EmptyVec)?;
     let parsed = first.parse::<i32>()?;
     Ok(2 * parsed)
-    // .and_then(|s| {
-    //     s.parse::<i32>()
-    //         // Update to the new error type here also.
-    //         .map_err(|e| e.into())
-    //         .map(|i| 2 * i)
-    // })
 }
 
 #[allow(dead_code)]

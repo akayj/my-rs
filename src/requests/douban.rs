@@ -25,9 +25,13 @@ pub struct Movies {
 }
 
 impl Douban {
-    #[allow(dead_code)]
-    pub fn new(site: &str, target_dir: &str) -> Self {
-        Self(String::from(site), String::from(target_dir))
+    // #[allow(dead_code)]
+    // pub fn new(site: &str, target_dir: &str) -> Self {
+    //     Self(String::from(site), String::from(target_dir))
+    // }
+
+    pub fn new<S: Into<String>>(site: S, target_dir: S) -> Self {
+        Self(site.into(), target_dir.into())
     }
 }
 
@@ -36,42 +40,11 @@ pub fn fetch_movie_links_json(site: &str) -> Result<Movies> {
     let headers = build_cross_headers(site);
 
     let client = Client::new();
-    let resp = client.get(site).headers(headers).send()?.json::<Movies>()?;
+    // let resp = client.get(site).headers(headers).send()?.json::<Movies>()?;
+    let resp: Movies = client.get(site).headers(headers).send()?.json()?;
 
     Ok(resp)
 }
-
-// pub fn fetch_movie_links(site: &str) -> Result<Vec<LinkMeta>> {
-//     // headers
-//     let headers = build_cross_headers(site);
-
-//     let client = Client::new();
-//     let resp = client.get(site).headers(headers).send()?;
-
-//     if !resp.status().is_success() {
-//         return Err(anyhow!("request failed: {:?}", resp.status()));
-//     }
-
-//     let text = resp.text()?;
-
-//     let document = Html::parse_document(&text);
-//     let selector = Selector::parse(r#"tr.item td:first-child a.nbg img"#).unwrap();
-
-//     let mut links = vec![];
-//     for (_, elem) in (1_u32..).zip(document.select(&selector)) {
-//         let title = elem.value().attr("alt").unwrap();
-//         let href = elem.value().attr("src").unwrap();
-
-//         links.push(LinkMeta {
-//             href: String::from(href),
-//             title: String::from(title),
-//         });
-//     }
-
-//     Ok(links)
-// }
-
-// fetch douban top movies links
 
 impl Downloader for Douban {
     fn download(&self) -> Result<()> {
