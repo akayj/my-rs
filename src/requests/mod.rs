@@ -53,12 +53,6 @@ fn download(title: &str, url: &str, target_dir: &str) -> Result<i64> {
     }
 }
 
-// pub enum SiteType {
-//     Douban,
-//     HotGril,
-//     Null,
-// }
-
 #[allow(dead_code)]
 pub enum SiteType {
     Google,

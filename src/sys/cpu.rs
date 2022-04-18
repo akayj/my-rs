@@ -38,7 +38,7 @@ pub fn cpu_cache() {
                     "direct-mapped"
                 };
 
-                println!(
+                debug!(
                     "L{} {}: ({}, {}, {})",
                     cache.level(),
                     typ,
@@ -55,7 +55,7 @@ pub fn cpu_cache() {
 pub fn cpu_info() {
     let cpuid = CpuId::new();
 
-    println!(
+    debug!(
         "CPU Vendor: {}",
         cpuid
             .get_vendor_info()
@@ -63,7 +63,7 @@ pub fn cpu_info() {
             .map_or_else(|| "unknown", |vf| vf.as_str(),)
     );
 
-    println!(
+    debug!(
         "CPU Model: {}",
         cpuid
             .get_processor_brand_string()
@@ -71,7 +71,7 @@ pub fn cpu_info() {
             .map_or_else(|| "n/a", |pbs| pbs.as_str())
     );
 
-    println!(
+    debug!(
         "APIC ID: {}",
         cpuid.get_feature_info().as_ref().map_or_else(
             || String::from("n/a"),

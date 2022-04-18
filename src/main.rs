@@ -9,6 +9,7 @@ mod lifetime;
 mod notify;
 mod requests;
 mod sys;
+mod tts;
 
 use std::time::Instant;
 
@@ -106,12 +107,19 @@ fn main() {
         Ok(lines) => {
             // read site list
             for line in lines.into_iter().flatten() {
-                if !line.starts_with('#') {
-                    log::debug!("found site: {}", line);
-                    sites.push(line);
-                } else {
-                    log::warn!("ignore site: {}", line);
+                if line.starts_with('#'){
+		    log::debug!("ignore site: {}", line);
+                    continue;
                 }
+
+                let line = line.replace(' ', "");
+
+                if line.is_empty() {
+                    continue;
+                }
+
+                log::debug!("found site: {}", line);
+                sites.push(line);
             }
 
             // handle every site
@@ -143,6 +151,9 @@ fn main() {
     lifetime::bounds::main();
 
     asyncs::main();
+    tts::main();
+
+    sys::systeminfo();
 
     log::info!(target: "app_events",
 	       "execution cost {:.2} secs",
