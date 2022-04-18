@@ -107,8 +107,8 @@ fn main() {
         Ok(lines) => {
             // read site list
             for line in lines.into_iter().flatten() {
-                if line.starts_with('#'){
-		    log::debug!("ignore site: {}", line);
+                if line.starts_with('#') {
+                    log::debug!("ignore site: {}", line);
                     continue;
                 }
 
@@ -124,8 +124,8 @@ fn main() {
 
             // handle every site
             for ref site in sites {
-                let hot = HotGril::new(site, "images/hot");
-                if let Err(e) = hot.download() {
+                let dl = HotGril::new(site, &String::from("images/hot"));
+                if let Err(e) = dl.download() {
                     log::error!("download images from page `{}` failed: {}", site, e);
                 } else {
                     let s = format!("download {} finished", site);

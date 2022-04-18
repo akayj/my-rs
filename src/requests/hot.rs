@@ -4,8 +4,11 @@ use scraper::{Html, Selector};
 use super::{build_cross_headers, download, Downloader, HotGril};
 
 impl HotGril {
-    pub fn new(site: &str, target_dir: &str) -> Self {
-        Self(String::from(site), String::from(target_dir))
+    // pub fn new(site: &str, target_dir: &str) -> Self {
+    //     Self(String::from(site), String::from(target_dir))
+    // }
+    pub fn new<S: Into<String>>(site: S, target_dir: S) -> Self {
+        Self(site.into(), target_dir.into())
     }
 }
 
