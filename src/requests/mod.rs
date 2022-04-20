@@ -2,7 +2,7 @@ pub mod douban;
 pub mod hot;
 pub mod traits;
 
-use std::{io::{Cursor, Read}, any};
+use std::io::{Cursor, Read};
 
 use anyhow::{anyhow, Result};
 use reqwest::header::{HeaderMap, HeaderValue, REFERER, USER_AGENT};
