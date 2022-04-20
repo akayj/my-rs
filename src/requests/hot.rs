@@ -1,7 +1,7 @@
 use anyhow::{anyhow, Result};
 use scraper::{Html, Selector};
 
-use super::{build_cross_headers, download, Downloader, HotGril};
+use super::{build_cross_headers, download, simple_download, Downloader, HotGril};
 
 impl HotGril {
     // pub fn new(site: &str, target_dir: &str) -> Self {
@@ -33,11 +33,12 @@ impl Downloader for HotGril {
             return Err(anyhow!("create '{}' failed: {}", self.1, e));
         }
 
-        for (idx, elem) in (1_u32..).zip(document.select(&selector)) {
+        for (idx, elem) in (1u32..).zip(document.select(&selector)) {
             let title = elem.value().attr("alt").unwrap();
             let href = elem.value().attr("data-srcset").unwrap();
 
-            match download(title, href, self.1.as_str()) {
+            // match download(title, href, self.1.as_str()) {
+            match simple_download(title, href, self.1.as_str()) {
                 Err(e) => log::error!("[#{}] {}<{}> {}", idx, title, href, e),
                 Ok(size) => match size {
                     0 => log::error!("[#{}] {} download failed", idx, title),

@@ -69,7 +69,8 @@ impl Downloader for Douban {
                         continue;
                     }
 
-                    match super::download(&link.title, &link.cover, self.1.as_str()) {
+                    // match super::download(&link.title, &link.cover, self.1.as_str()) {
+                    match super::simple_download(&link.title, &link.cover, self.1.as_str()) {
                         Ok(0) => log::error!("download `{}` failed", link.cover),
                         Ok(-1) => log::debug!("{} already download", link.title),
                         Ok(bytes) => {

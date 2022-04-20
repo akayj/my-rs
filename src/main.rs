@@ -17,7 +17,7 @@ use std::time::Instant;
 use clap::Parser;
 use env_logger::Target;
 
-use crate::requests::{Douban, Downloader, HotGril};
+use crate::requests::{simple_download, Douban, Downloader, HotGril};
 
 #[derive(Parser, Debug)]
 #[clap(

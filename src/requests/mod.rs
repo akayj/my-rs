@@ -2,7 +2,7 @@ pub mod douban;
 pub mod hot;
 pub mod traits;
 
-use std::io::Cursor;
+use std::{io::{Cursor, Read}, any};
 
 use anyhow::{anyhow, Result};
 use reqwest::header::{HeaderMap, HeaderValue, REFERER, USER_AGENT};
@@ -27,6 +27,50 @@ fn build_cross_headers(refer: &str) -> HeaderMap {
     headers
 }
 
+pub fn simple_download(title: &str, url: &str, target_dir: &str) -> Result<i64> {
+    let file_ext = url.split('.').last().expect("cant find file ext");
+    let file_path = &format!("{}/{}.{}", target_dir, title, file_ext);
+
+    if std::path::Path::new(file_path).exists() {
+        return Ok(-1);
+    }
+
+    let resp = ureq::get(url)
+        .set(
+            "User-Agent",
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:98.0) Gecko/20100101 Firefox/98.0",
+        )
+        .set("Referer", url)
+        .call()?;
+
+    if resp.status() != 200 {
+        return Err(anyhow!("request failed: {:?}", resp.status()));
+    }
+
+    // log::debug!("responsed header: {:?}", resp.header("Content-Length"));
+
+    let mut file = std::fs::File::create(file_path)?;
+    // FIXME: larger than 10 megabytes will caurse an error. Try use `into_reader` instead.
+
+    use std::io::{Read, Write};
+    // match resp.into_reader().take(10_000_000).read_to_end(&mut file_content) {
+    // 	Ok(v) => Ok(v as i64),
+    // 	Err(e) => Err(anyhow!(e)),
+    // }
+
+    let mut buf = Vec::new();
+    resp.into_reader().take(10_000_000).read_to_end(&mut buf)?;
+
+    // std::io::copy(&mut buf, &mut file)
+
+    // let bs = resp.into_string()?;
+    let mut content = Cursor::new(buf);
+    match std::io::copy(&mut content, &mut file) {
+        Ok(size) => Ok(size as i64),
+        Err(e) => Err(anyhow!(e)),
+    }
+}
+
 fn download(title: &str, url: &str, target_dir: &str) -> Result<i64> {
     let file_ext = url.split('.').last().expect("cant find file ext");
     let file_path = &format!("{}/{}.{}", target_dir, title, file_ext);
@@ -39,18 +83,23 @@ fn download(title: &str, url: &str, target_dir: &str) -> Result<i64> {
     let headers = build_cross_headers(url);
 
     let client = reqwest::blocking::Client::new();
-    let resp = client.get(url).headers(headers).send()?;
+    let mut resp = client.get(url).headers(headers).send()?;
 
     if !resp.status().is_success() {
         return Err(anyhow!("request failed: {:?}", resp.status()));
     }
 
     let mut file = std::fs::File::create(file_path)?;
-    let mut content = Cursor::new(resp.bytes()?);
-    match std::io::copy(&mut content, &mut file) {
+    match resp.copy_to(&mut file) {
         Ok(size) => Ok(size as i64),
         Err(e) => Err(anyhow!(e)),
     }
+
+    // let mut content = Cursor::new(resp.bytes()?);
+    // match std::io::copy(&mut content, &mut file) {
+    //     Ok(size) => Ok(size as i64),
+    //     Err(e) => Err(anyhow!(e)),
+    // }
 }
 
 #[allow(dead_code)]
