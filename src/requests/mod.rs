@@ -47,23 +47,13 @@ pub fn simple_download(title: &str, url: &str, target_dir: &str) -> Result<i64> 
         return Err(anyhow!("request failed: {:?}", resp.status()));
     }
 
-    // log::debug!("responsed header: {:?}", resp.header("Content-Length"));
-
     let mut file = std::fs::File::create(file_path)?;
     // FIXME: larger than 10 megabytes will caurse an error. Try use `into_reader` instead.
-
-    use std::io::{Read, Write};
-    // match resp.into_reader().take(10_000_000).read_to_end(&mut file_content) {
-    // 	Ok(v) => Ok(v as i64),
-    // 	Err(e) => Err(anyhow!(e)),
-    // }
+    // let bs = resp.into_string()?;
 
     let mut buf = Vec::new();
     resp.into_reader().take(10_000_000).read_to_end(&mut buf)?;
 
-    // std::io::copy(&mut buf, &mut file)
-
-    // let bs = resp.into_string()?;
     let mut content = Cursor::new(buf);
     match std::io::copy(&mut content, &mut file) {
         Ok(size) => Ok(size as i64),
