@@ -17,7 +17,7 @@ use std::time::Instant;
 use clap::Parser;
 use env_logger::Target;
 
-use crate::requests::{simple_download, Douban, Downloader, HotGril};
+use crate::requests::{Douban, Downloader, HotGril};
 
 #[derive(Parser, Debug)]
 #[clap(
@@ -64,9 +64,6 @@ fn init_log(log_level: &str, log_target: &str) {
 
     if let Err(e) = env_logger::builder()
         .target(target)
-        // .filter_level(level)
-        // .filter(Some("scraper"), log::LevelFilter::Error)
-        // .filter(Some("html5ever"), log::LevelFilter::Error)
         // .format(|buf, record| {
         //     writeln!(
         //         buf,
@@ -97,8 +94,6 @@ fn main() {
     log::debug!("starting up");
 
     full_info();
-
-    // models::connect().await;
 
     let site_file = &args.site;
     let mut sites = vec![];

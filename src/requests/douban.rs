@@ -1,6 +1,5 @@
 use anyhow::{anyhow, Result};
 use reqwest::blocking::Client;
-// use scraper::{Html, Selector};
 use serde::Deserialize;
 
 use super::{build_cross_headers, Douban, Downloader};
