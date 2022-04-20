@@ -84,12 +84,6 @@ fn download(title: &str, url: &str, target_dir: &str) -> Result<i64> {
         Ok(size) => Ok(size as i64),
         Err(e) => Err(anyhow!(e)),
     }
-
-    // let mut content = Cursor::new(resp.bytes()?);
-    // match std::io::copy(&mut content, &mut file) {
-    //     Ok(size) => Ok(size as i64),
-    //     Err(e) => Err(anyhow!(e)),
-    // }
 }
 
 #[allow(dead_code)]

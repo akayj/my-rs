@@ -84,7 +84,7 @@ pub fn cpu_info() {
 
     // features
     let mut features = Vec::with_capacity(80);
-    cpuid.get_feature_info().map(|finfo| {
+    if let Some(finfo) = cpuid.get_feature_info() {
         if finfo.has_sse() {
             features.push("sse");
         }
@@ -120,7 +120,7 @@ pub fn cpu_info() {
         if finfo.has_acpi() {
             features.push("acpi");
         }
-    });
+    }
 
     debug!("CPU Features: {}", features.join(" "));
 }

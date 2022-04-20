@@ -1,7 +1,7 @@
 use anyhow::{anyhow, Result};
 use scraper::{Html, Selector};
 
-use super::{build_cross_headers, download, simple_download, Downloader, HotGril};
+use super::{build_cross_headers, simple_download, Downloader, HotGril};
 
 impl HotGril {
     // pub fn new(site: &str, target_dir: &str) -> Self {

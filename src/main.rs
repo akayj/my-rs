@@ -13,7 +13,6 @@ mod tts;
 
 use std::time::Instant;
 
-// use chrono::Local;
 use clap::Parser;
 use env_logger::Target;
 
@@ -23,12 +22,11 @@ use crate::requests::{Douban, Downloader, HotGril};
 #[clap(
     version = "v0.1",
     author = "Developed by @akayj (Akayj)",
-    about = "An unidentifiable mechanism that helps you bypass GFW"
+    about = "Simple CLI Application that scrach content from web"
 )]
 /// Simple program to greet to person.
 struct Args {
     /// .toml config file name
-    // #[clap(short, long, takes_value = true)]
     #[clap(short, long, default_value_t = String::from("client.toml"), takes_value = true)]
     config: String,
 
@@ -45,7 +43,7 @@ struct Args {
     site: String,
 }
 
-fn init_log(log_level: &str, log_target: &str) {
+pub fn init_log(log_level: &str, log_target: &str) {
     use std::str::FromStr;
 
     let level = log::LevelFilter::from_str(log_level).unwrap_or_else(|_| {
@@ -81,11 +79,8 @@ fn init_log(log_level: &str, log_target: &str) {
     }
 }
 
-// #[tokio::main]
-// async fn main() {
 fn main() {
     let started = Instant::now();
-
     let args = Args::parse();
     log::debug!("args: {:?}", args);
 
@@ -159,7 +154,6 @@ fn full_info() {
     // if let Err(e) = sys::battery_info() {
     //     log::error!("error: {}", e);
     // }
-
     sys::system_info();
     sys::cpu_info();
     sys::print_mem();
