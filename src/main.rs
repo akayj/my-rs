@@ -47,7 +47,7 @@ pub fn init_log(log_level: &str, log_target: &str) {
     use std::str::FromStr;
 
     let level = log::LevelFilter::from_str(log_level).unwrap_or_else(|e| {
-        println!("unknown {} use default *DEBUG* level:{}", log_level, e);
+        println!("parse `{}` error: {}, rollback to *DEBUG*", log_level, e);
         log::LevelFilter::Debug
     });
 
