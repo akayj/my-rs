@@ -6,7 +6,8 @@ run:
     cargo run
 
 build PATTERN:
-    cargo build --timings --profile {{PATTERN}}
+    # cargo build --timings --profile {{PATTERN}}
+    cargo build --profile {{PATTERN}}
 
 clean-release:
     cargo clean --release

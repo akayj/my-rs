@@ -21,7 +21,6 @@ fn build_cross_headers(refer: &str) -> HeaderMap {
     );
 
     headers.insert(REFERER, HeaderValue::from_str(refer).unwrap());
-
     // headers.insert(ACCEPT, HeaderValue::from_static("text/html;image/webp"));
 
     headers
@@ -61,85 +60,8 @@ pub fn simple_download(title: &str, url: &str, target_dir: &str) -> Result<i64> 
     }
 }
 
-fn download(title: &str, url: &str, target_dir: &str) -> Result<i64> {
-    let file_ext = url.split('.').last().expect("cant find file ext");
-    let file_path = &format!("{}/{}.{}", target_dir, title, file_ext);
-
-    if std::path::Path::new(file_path).exists() {
-        return Ok(-1);
-    }
-
-    // headers
-    let headers = build_cross_headers(url);
-
-    let client = reqwest::blocking::Client::new();
-    let mut resp = client.get(url).headers(headers).send()?;
-
-    if !resp.status().is_success() {
-        return Err(anyhow!("request failed: {:?}", resp.status()));
-    }
-
-    let mut file = std::fs::File::create(file_path)?;
-    match resp.copy_to(&mut file) {
-        Ok(size) => Ok(size as i64),
-        Err(e) => Err(anyhow!(e)),
-    }
-}
-
-#[allow(dead_code)]
-pub enum SiteType {
-    Google,
-    Baidu,
-    Alibaba,
-    Facebook,
-    Twitter,
-    Douban,
-    HotGrils,
-}
-
-impl SiteType {
-    #[allow(dead_code)]
-    pub fn from_string(s: &str) -> Option<Self> {
-        match s {
-            "google" => Some(Self::Google),
-            "baidu" => Some(Self::Baidu),
-            "alibaba" => Some(Self::Alibaba),
-            "facebook" => Some(Self::Facebook),
-            "twitter" => Some(Self::Twitter),
-            "douban" => Some(Self::Douban),
-            "hot" => Some(Self::HotGrils),
-            _ => None,
-        }
-    }
-}
-
-// impl<T> Downloader for T
-// where
-//     T: SiteType,
-// {
-//     fn download(&self) -> Result<()> {
-//         Ok(())
-//     }
-// }
-
 pub struct Douban(pub String, pub String);
 pub struct HotGril(pub String, pub String);
-
-// pub struct WebSite {
-//     pub downloader: Box<dyn Downloader>,
-//     pub site: String,
-//     pub target_dir: String,
-// }
-
-// impl WebSite {
-//     pub fn new(downloader: Box<dyn Downloader>, site: &str, target_dir: &str) -> Self {
-//         Self {
-//             downloader,
-//             site: String::from(site),
-//             target_dir: String::from(target_dir),
-//         }
-//     }
-// }
 
 pub trait Downloader {
     fn download(&self) -> Result<()>;

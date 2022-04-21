@@ -1,4 +1,4 @@
-// #[macro_use]
+/* #[macro_use] */
 extern crate log;
 
 mod asyncs;
@@ -46,11 +46,8 @@ struct Args {
 pub fn init_log(log_level: &str, log_target: &str) {
     use std::str::FromStr;
 
-    let level = log::LevelFilter::from_str(log_level).unwrap_or_else(|_| {
-        println!(
-            "unknown log level: {}, use default *DEBUG* level",
-            log_level
-        );
+    let level = log::LevelFilter::from_str(log_level).unwrap_or_else(|e| {
+        println!("unknown {} use default *DEBUG* level:{}", log_level, e);
         log::LevelFilter::Debug
     });
 
@@ -85,8 +82,6 @@ fn main() {
     log::debug!("args: {:?}", args);
 
     init_log(&args.log_level, &args.log_target);
-
-    log::debug!("starting up");
 
     full_info();
 
@@ -136,14 +131,14 @@ fn main() {
         log::error!("{}", e);
     }
 
-    lifetime::life_check();
-    lifetime::traits::main();
-    lifetime::bounds::main();
+    // lifetime::life_check();
+    // lifetime::traits::main();
+    // lifetime::bounds::main();
 
-    asyncs::main();
-    tts::main();
+    // asyncs::main();
+    // tts::main();
 
-    sys::systeminfo();
+    // sys::systeminfo();
 
     log::info!(target: "app_events",
 	       "execution cost {:.2} secs",

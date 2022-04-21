@@ -24,23 +24,20 @@ pub struct Movies {
 }
 
 impl Douban {
-    // #[allow(dead_code)]
-    // pub fn new(site: &str, target_dir: &str) -> Self {
-    //     Self(String::from(site), String::from(target_dir))
-    // }
-
     pub fn new<S: Into<String>>(site: S, target_dir: S) -> Self {
         Self(site.into(), target_dir.into())
     }
 }
 
 pub fn fetch_movie_links_json(site: &str) -> Result<Movies> {
-    // headers
-    let headers = build_cross_headers(site);
-
-    let client = Client::new();
-    // let resp = client.get(site).headers(headers).send()?.json::<Movies>()?;
-    let resp: Movies = client.get(site).headers(headers).send()?.json()?;
+    let resp: Movies = ureq::get(site)
+        .set(
+            "User-Agent",
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:98.0) Gecko/20100101 Firefox/98.0",
+        )
+        .set("Referer", site)
+        .call()?
+        .into_json()?;
 
     Ok(resp)
 }
