@@ -7,6 +7,7 @@ const CTLNAME: &str = "kernel.ostype";
 
 pub fn print_mem() {
     let ctl = sysctl::Ctl::new(CTLNAME).unwrap();
+
     println!("Description: {}", ctl.description().unwrap());
     println!("Value: {}", ctl.value_string().unwrap());
 }
