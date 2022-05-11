@@ -46,13 +46,11 @@ pub fn simple_download(title: &str, url: &str, target_dir: &str) -> Result<i64> 
         return Err(anyhow!("request failed: {:?}", resp.status()));
     }
 
-    let mut file = std::fs::File::create(file_path)?;
     // FIXME: larger than 10 megabytes will caurse an error. Try use `into_reader` instead.
-    // let bs = resp.into_string()?;
-
     let mut buf = Vec::new();
     resp.into_reader().take(10_000_000).read_to_end(&mut buf)?;
 
+    let mut file = std::fs::File::create(file_path)?;
     let mut content = Cursor::new(buf);
     match std::io::copy(&mut content, &mut file) {
         Ok(size) => Ok(size as i64),
@@ -65,4 +63,8 @@ pub struct HotGril(pub String, pub String);
 
 pub trait Downloader {
     fn download(&self) -> Result<()>;
+}
+
+pub trait DownloadHelper {
+    fn help(&self) -> Result<()>;
 }
