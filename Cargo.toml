@@ -12,27 +12,18 @@ edition = "2021"
 [dependencies]
 libc = "0.2"
 
-clap = { version = "3.1", features = ["derive"]}
-# bitflags = { version = "1.3" }
-# local-ip-address = "0.4"
-# battery = "0.7"
+clap = { version = "3.1", features = ["derive"] }
 sysinfo = "0.23.11"
 systemstat = "0.1"
-# systemstat = { git = "https://github.com/unrelentingtech/systemstat.git" }
 
 raw-cpuid = "10.3.0"
 
-scraper = "0.12.0"
+scraper = "0.13.0"
 
-serde = { version = "1.0.136", features = ["derive"] }
+serde = { version = "1.0.137", features = ["derive"] }
 
-# lru = "0.7.3"
 
-# mp4parse = "0.12.0"
-# rand = "0.8.5"
-# socket2 = "0.4.4"
-
-log = "0.4.14"
+log = "0.4.17"
 env_logger = "0.9.0"
 chrono = "0.4"
 
@@ -41,39 +32,17 @@ tokio = { version = "1", features = ["full"] }
 
 ureq = { version = "2.4", features = ["json"] }
 
-# hyper = "0.14"
-
-# druid = "0.7.0"
-# druid = { git = "https://github.com/linebender/druid.git" }
-
 notify-rust = "4"
 
 thiserror = { version = "1.0" }
 anyhow = "1.0"
 
-# sea-orm = { version = "^0", features = [ "sqlx-mysql", "runtime-tokio-rustls", "macros" ] }
 futures = "0.3"
 
-# Game Dev
-# bevy = { version = "0.6.0", features = ["dynamic"] }
 
 [target.'cfg(unix)'.dependencies]
-nix = "0.23"
+nix = "0.24.1"
 sysctl = "0.4"
-
-# [target.'cfg(target_os="macos")'.dependencies]
-# cocoa = "0.24.0"
-# image-capture-core = { version = "0.1.5" }
-# image-capture-core = { git = "https://github.com/brandonhamilton/image-capture-core-rs.git" }
-
-# [target.'cfg(windows)'.dependencies]
-# windows = { version = "0.33.0" }
-# winapi = { version = "0.3", features = ["winuser"] }
-
-# [build-dependencies]
-# cc = { version = "1.0", features = ["parallel"] }
-# pkg-config = "0.3.24"
-# bindgen = "0.59.2"
 
 [profile.dev]
 opt-level = 1
@@ -81,8 +50,6 @@ opt-level = 1
 [profile.release]
 opt-level = "s"
 codegen-units = 1
-# strip = "debuginfo"
 strip = true
-# lto = "thin"
 lto = true
 incremental = true
