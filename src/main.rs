@@ -151,5 +151,5 @@ fn full_info() {
     // }
     sys::system_info();
     sys::cpu_info();
-    sys::print_mem();
+    // sys::print_mem();
 }

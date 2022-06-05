@@ -1,8 +1,7 @@
 use anyhow::{anyhow, Result};
-use reqwest::blocking::Client;
 use serde::Deserialize;
 
-use super::{build_cross_headers, Douban, Downloader};
+use super::{ Douban, Downloader};
 
 #[derive(Debug)]
 pub struct LinkMeta {

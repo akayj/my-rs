@@ -2,6 +2,7 @@
 
 sites
 
+.vscode/
 target/
 images/
 

@@ -1,14 +1,14 @@
 // mod battery;
 mod cpu;
-mod mem;
+// mod mem;
 mod system;
 
 // pub use self::battery::*;
 pub use self::cpu::*;
-pub use self::mem::*;
+// pub use self::mem::*;
 pub use self::system::*;
 
-use systemstat::{saturating_sub_bytes, Platform, System};
+use systemstat::{Platform, System};
 
 pub fn systeminfo() {
     let sys = System::new();
