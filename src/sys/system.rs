@@ -1,10 +1,11 @@
-use sysinfo::{DiskExt, System, SystemExt};
+use sysinfo::{DiskExt, NetworkExt, System, SystemExt};
 
 // const KB: u64 = 1 << 10;
-const MB: u64 = 1 << 20;
-// const GB: u64 = 1 << 30;
+const MIB: u64 = 1 << 20;
+const GIB: u64 = 1 << 30;
 
-const GIB: u64 = 1_000_000_000;
+// const MB: u64 = 1_000_000;
+// const GB: u64 = 1_000_000_000;
 
 pub fn system_info() {
     let mut sys = System::new_all();
@@ -13,33 +14,34 @@ pub fn system_info() {
     log::debug!("=> disks:");
     for disk in sys.disks() {
         log::debug!(
-            "Type: {:?}, Total: {:.2} GB, Free: {:.2} GB",
+            "Name: {:?}, ({:?}, Free: ({:.1} GIB /{:.1} GIB)",
+            disk.mount_point(),
             disk.type_(),
-            human_size(disk.total_space(), GIB),
             human_size(disk.available_space(), GIB),
+            human_size(disk.total_space(), GIB),
         );
     }
 
-    // println!("=> networks:");
-    // for (interface_name, data) in sys.networks() {
-    //     println!(
-    //         "{}: {}/{} B",
-    //         interface_name,
-    //         data.received(),
-    //         data.transmitted()
-    //     );
-    // }
+    println!("=> networks:");
+    for (interface_name, data) in sys.networks() {
+        println!(
+            "{}: {}/{} B",
+            interface_name,
+            data.received(),
+            data.transmitted()
+        );
+    }
 
     log::debug!("=> system:");
     log::debug!(
-        "total memory: {:.2} GB, used mem: {:.2} GB",
-        human_size(sys.total_memory(), MB),
-        human_size(sys.used_memory(), MB),
+        "memory: {:.2} GB used of {:.2} GB",
+        human_size(sys.used_memory(), MIB),
+        human_size(sys.total_memory(), MIB),
     );
     log::debug!(
-        "total swap: {:.2} GB, used: {:.2} GB",
-        human_size(sys.total_swap(), MB),
-        human_size(sys.used_swap(), MB),
+        "swap: {:.2} GB used of {:.2} GB",
+        human_size(sys.used_swap(), MIB),
+        human_size(sys.total_swap(), MIB),
     );
 }
 

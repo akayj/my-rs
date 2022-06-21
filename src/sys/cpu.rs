@@ -64,6 +64,14 @@ pub fn cpu_info() {
     );
 
     debug!(
+        "CPU Frequency: {}",
+        cpuid.get_processor_frequency_info().as_ref().map_or_else(
+            || String::from("n/a"),
+            |vf| format!("vf: {}", vf.processor_max_frequency())
+        )
+    );
+
+    debug!(
         "CPU Model: {}",
         cpuid
             .get_processor_brand_string()

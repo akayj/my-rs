@@ -93,7 +93,7 @@ fn main() {
             // read site list
             for line in lines.into_iter().flatten() {
                 if line.starts_with('#') {
-                    log::debug!("ignore site: {}", line);
+                    // log::debug!("ignore site: {}", line);
                     continue;
                 }
 
@@ -124,21 +124,12 @@ fn main() {
 
     // Douban
     // let url = "https://movie.douban.com/j/search_subjects?type=tv&tag=美剧&page_limit=50&page_start=0";
-    let url = "https://movie.douban.com/j/search_subjects?type=movie&tag=%E7%88%B1%E6%83%85&sort=recommend&page_limit=40&page_start=0";
     // let url = "https://movie.douban.com/j/search_subjects?type=movie&tag=热门&page_limit=50&page_start=0";
+    let url = "https://movie.douban.com/j/search_subjects?type=movie&tag=%E7%88%B1%E6%83%85&sort=recommend&page_limit=40&page_start=0";
     let website = Douban::new(url, "images/douban");
     if let Err(e) = website.download() {
         log::error!("{}", e);
     }
-
-    // lifetime::life_check();
-    // lifetime::traits::main();
-    // lifetime::bounds::main();
-
-    // asyncs::main();
-    // tts::main();
-
-    // sys::systeminfo();
 
     log::info!(target: "app_events",
 	       "execution cost {:.2} secs",
@@ -146,10 +137,24 @@ fn main() {
 }
 
 fn full_info() {
-    // if let Err(e) = sys::battery_info() {
-    //     log::error!("error: {}", e);
-    // }
     sys::system_info();
     sys::cpu_info();
-    // sys::print_mem();
+
+    if let Err(e) = sys::battery_info() {
+        log::error!("bad things happend: {}", e);
+    }
+
+    // sys::systeminfo();
+    match sys::gpu::gpu_info() {
+        Err(e) => println!("get gpu info error: {}", e),
+        Ok(_) => (),
+    }
+
+    // if let Err(e) = sys::reg::iter_registry() {
+    //     println!("iter registry failed: {}", e);
+    // }
+
+    if let Err(e) = sys::reg::query_uninstall_keys() {
+        println!("query multi registry subkeys failed: {}", e);
+    }
 }

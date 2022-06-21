@@ -15,5 +15,7 @@ pub fn battery_info() -> Result<(), battery::Error> {
         // println!("battery: {:?}", battery);
     }
 
+    println!("detect battery info done");
+
     Ok(())
 }

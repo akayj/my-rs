@@ -1,9 +1,11 @@
-// mod battery;
+mod battery;
 mod cpu;
 // mod mem;
+pub mod gpu;
+pub mod reg;
 mod system;
 
-// pub use self::battery::*;
+pub use self::battery::*;
 pub use self::cpu::*;
 // pub use self::mem::*;
 pub use self::system::*;
