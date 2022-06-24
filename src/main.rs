@@ -119,7 +119,7 @@ fn main() {
             }
         }
 
-        Err(e) => log::error!("read file `{}` failed: {}", site_file, e),
+        Err(e) => log::warn!("read file `{}` failed: {}", site_file, e),
     }
 
     // Douban
