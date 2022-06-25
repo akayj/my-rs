@@ -27,13 +27,3 @@ fn print(result: Result<i32>) {
         Err(e) => println!("Custom error: {}", e),
     }
 }
-
-pub fn error_print() {
-    let numbers = vec!["42", "93", "18"];
-    let empty: Vec<_> = vec![];
-    let strings = vec!["tofu", "93", "18"];
-
-    print(double_first(numbers));
-    print(double_first(empty));
-    print(double_first(strings));
-}

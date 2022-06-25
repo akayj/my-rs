@@ -14,11 +14,11 @@ pub fn gpu_info() -> Result<(), anyhow::Error> {
     let temp = device.temperature(TemperatureSensor::Gpu)?;
     let mem_info = device.memory_info()?;
     let graphics_clock = device.clock_info(Clock::Graphics)?;
-    let mem_clock = device.clock_info(Clock::Memory)?;
-    let link_gen = device.current_pcie_link_gen()?;
-    let link_width = device.current_pcie_link_width()?;
-    let max_link_gen = device.max_pcie_link_gen()?;
-    let max_link_width = device.max_pcie_link_width()?;
+    // let mem_clock = device.clock_info(Clock::Memory)?;
+    // let link_gen = device.current_pcie_link_gen()?;
+    // let link_width = device.current_pcie_link_width()?;
+    // let max_link_gen = device.max_pcie_link_gen()?;
+    // let max_link_width = device.max_pcie_link_width()?;
     let cuda_cores = device.num_cores()?;
     let architecture = device.architecture()?;
 
