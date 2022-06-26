@@ -7,6 +7,7 @@ mod ffi;
 mod lifetime;
 mod notify;
 mod requests;
+mod serial;
 mod sys;
 mod tts;
 
@@ -156,4 +157,10 @@ fn full_info() {
     if let Err(e) = sys::reg::query_uninstall_keys() {
         println!("query multi registry subkeys failed: {}", e);
     }
+
+    use uuid::Uuid;
+    let id = Uuid::new_v4();
+    println!("uuid v4: {:?}", id);
+
+    serial::serial_something();
 }
