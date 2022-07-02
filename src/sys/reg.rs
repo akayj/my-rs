@@ -1,24 +1,10 @@
 use std::io;
 use winreg::enums::*;
-use winreg::RegKey;
-use winreg::HKEY;
+use winreg::{RegKey, HKEY};
 
 const REGKEY_UNINSTALL: &str = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall";
 const REGKEY_UNINSTALL2: &str =
     "Software\\Wow6432node\\Microsoft\\Windows\\CurrentVersion\\Uninstall";
-
-// pub fn iter_registry() -> io::Result<()> {
-//     println!("Reading some system info...");
-
-//     let hklm = RegKey::predef(HKEY_LOCAL_MACHINE);
-
-//     let cur_ver = hklm.open_subkey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion")?;
-//     let pf: String = cur_ver.get_value("ProgramFilesDir")?;
-//     let dp: String = cur_ver.get_value("DevicePath")?;
-//     println!("ProgramFiles = {}\nDevicePath = {}", pf, dp);
-
-//     Ok(())
-// }
 
 pub fn query_regitems(key: HKEY, sub_key: &str, name: Option<&str>) -> io::Result<()> {
     let hklm = RegKey::predef(key);
