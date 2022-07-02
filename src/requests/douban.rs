@@ -1,7 +1,7 @@
 use anyhow::{anyhow, Result};
 use serde::Deserialize;
 
-use super::{ Douban, Downloader};
+use super::{Douban, Downloader};
 
 #[derive(Debug)]
 pub struct LinkMeta {
@@ -34,7 +34,8 @@ pub fn fetch_movie_links_json(site: &str) -> Result<Movies> {
             "User-Agent",
             "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:98.0) Gecko/20100101 Firefox/98.0",
         )
-        .set("Referer", site)
+        // .set("Referer", site)
+        .set("Referer", "https://www.douban.com")
         .call()?
         .into_json()?;
 

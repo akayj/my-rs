@@ -20,7 +20,7 @@ const REGKEY_UNINSTALL2: &str =
 //     Ok(())
 // }
 
-pub fn query_regitems(key: HKEY, sub_key: &str) -> io::Result<()> {
+pub fn query_regitems(key: HKEY, sub_key: &str, name: Option<&str>) -> io::Result<()> {
     let hklm = RegKey::predef(key);
     let keys = hklm.open_subkey(sub_key)?;
 
@@ -29,6 +29,11 @@ pub fn query_regitems(key: HKEY, sub_key: &str) -> io::Result<()> {
         let leaf_key = hklm.open_subkey(&leaf_path)?;
 
         let display_name: String = leaf_key.get_value("DisplayName").unwrap_or_default();
+
+        if name != None && !display_name.contains(name.unwrap()) {
+            continue;
+        }
+
         let install_location: String = leaf_key.get_value("InstallLocation").unwrap_or_default();
         let install_source: String = leaf_key.get_value("InstallSource").unwrap_or_default();
         let uninstall_string: String = leaf_key.get_value("UninstallString").unwrap_or_default();
@@ -47,22 +52,22 @@ pub fn query_regitems(key: HKEY, sub_key: &str) -> io::Result<()> {
     Ok(())
 }
 
-pub fn query_uninstall_keys() -> io::Result<()> {
-    if let Err(e) = query_regitems(HKEY_LOCAL_MACHINE, REGKEY_UNINSTALL) {
+pub fn query_uninstall_keys(name: Option<&str>) -> io::Result<()> {
+    if let Err(e) = query_regitems(HKEY_LOCAL_MACHINE, REGKEY_UNINSTALL, name) {
         println!(
             "query HKEY_LOCAL_MACHINE\\{} failed: {}",
             REGKEY_UNINSTALL, e
         );
     }
 
-    if let Err(e) = query_regitems(HKEY_LOCAL_MACHINE, REGKEY_UNINSTALL2) {
+    if let Err(e) = query_regitems(HKEY_LOCAL_MACHINE, REGKEY_UNINSTALL2, name) {
         println!(
             "query HKEY_LOCAL_MACHINE\\{} failed: {}",
             REGKEY_UNINSTALL2, e
         );
     }
 
-    if let Err(e) = query_regitems(HKEY_CURRENT_USER, REGKEY_UNINSTALL) {
+    if let Err(e) = query_regitems(HKEY_CURRENT_USER, REGKEY_UNINSTALL, name) {
         println!(
             "query HKEY_CURRENT_USER\\{} failed: {}",
             REGKEY_UNINSTALL, e
