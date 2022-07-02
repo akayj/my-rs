@@ -54,6 +54,9 @@ pub fn cpu_cache() {
 /// cpu_info prints information of CPU, especially cpu cache.
 pub fn cpu_info() {
     let cpuid = CpuId::new();
+    // let num = num_cpus::get();
+
+    debug!("CPU Count: {}", num_cpus::get());
 
     debug!(
         "CPU Vendor: {}",
