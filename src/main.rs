@@ -163,4 +163,7 @@ fn full_info() {
     println!("uuid v4: {:?}", id);
 
     serial::serial_something();
+    if let Err(e) = serial::exec() {
+        println!("exec nvidia-smi.exe -L failed: {}", e);
+    }
 }

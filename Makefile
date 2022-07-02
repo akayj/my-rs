@@ -12,6 +12,9 @@ release:
 find:
 	fd . -HI -tf -S +80ki 'images/' -X ls -lhS
 
+unix:
+	@fd -e rs -x dos2unix
+
 sync:
 	# rsync -av --delete --exclude='Makefile' --exclude='*.swp' --exclude='.git/*' --exclude='target/*' ./ jumper:/root/${repo}
 	rsync -av --delete --exclude='Makefile' --exclude='*.swp' --exclude='.git/*' --exclude='target/*' --exclude='images/*' ./ local-deb:/home/yj/${repo}

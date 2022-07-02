@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use subprocess::Exec;
 
 #[derive(Debug, Serialize, Deserialize)]
 struct Point {
@@ -16,4 +17,14 @@ pub fn serial_something() {
     let deserialized: Point = serde_json::from_str(&serialized).unwrap();
 
     println!("deserialized = {:?}", deserialized);
+}
+
+pub fn exec() -> anyhow::Result<()> {
+    let exit_status = Exec::cmd("C:\\Windows\\system32\\nvidia-smi.exe")
+        .arg("-L")
+        .join()?;
+
+    println!("nvidia-smi.exe -L returns {:?}", exit_status);
+
+    Ok(())
 }
