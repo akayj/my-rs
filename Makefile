@@ -14,6 +14,7 @@ find:
 
 unix:
 	@fd -e rs -x dos2unix
+	@dos2unix Makefile *.md Cargo.toml
 
 sync:
 	# rsync -av --delete --exclude='Makefile' --exclude='*.swp' --exclude='.git/*' --exclude='target/*' ./ jumper:/root/${repo}
