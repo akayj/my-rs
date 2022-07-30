@@ -133,7 +133,7 @@ fn main() {
         log::error!("{}", e);
     }
 
-    win::win_main();
+    // win::win_main();
 
     let flag = emojis::get_by_shortcode("hourglass").unwrap();
     log::info!(target: "app_events",
