@@ -57,8 +57,10 @@ impl Downloader for Douban {
 
                 let mut index = 1u8;
                 let mut total_size = 0_i64;
+                let flag = emojis::get_by_shortcode("white_check_mark").unwrap();
+
                 for link in &subjects {
-                    let rate = link.rate.parse::<f64>().unwrap_or(0_f64);
+                    let rate = link.rate.parse::<f64>().unwrap_or(0f64);
 
                     if rate < 7.0 {
                         log::warn!("{} rate is too low {}, ignore it", link.title, rate);
@@ -71,8 +73,8 @@ impl Downloader for Douban {
                         Ok(-1) => log::debug!("{} already download", link.title),
                         Ok(bytes) => {
                             log::info!(
-                                "[#{}] [{} rate: {}] {:.1} KiB <{}>",
-                                index,
+                                "{} [{} rate: {}] {:.1} KiB <{}>",
+                                flag,
                                 link.title,
                                 rate,
                                 bytes as f64 / 1024.0,
@@ -90,8 +92,10 @@ impl Downloader for Douban {
                 }
 
                 if index > 1 {
+                    let flag = emojis::get("🚀").unwrap();
                     log::info!(
-                        "已下载 {} 张图片， 共计 {:.2} MiB",
+                        "{} 已下载 {} 张图片， 共计 {:.2} MiB",
+                        flag,
                         index - 1,
                         total_size as f64 / 1_000_000.0
                     );

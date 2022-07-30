@@ -10,6 +10,7 @@ mod requests;
 mod serial;
 mod sys;
 mod tts;
+mod win;
 
 use std::time::Instant;
 
@@ -132,8 +133,12 @@ fn main() {
         log::error!("{}", e);
     }
 
+    win::win_main();
+
+    let flag = emojis::get_by_shortcode("hourglass").unwrap();
     log::info!(target: "app_events",
-	       "execution cost {:.2} secs",
+	       "{} execution cost {} secs",
+           flag,
 	       started.elapsed().as_secs_f64());
 }
 
@@ -155,11 +160,13 @@ fn full_info() {
     //     println!("iter registry failed: {}", e);
     // }
 
-    if let Err(e) = sys::reg::query_uninstall_keys(Some("微信")) {
+    // if let Err(e) = sys::reg::query_uninstall_keys(Some("微信")) {
+    if let Err(e) = sys::reg::query_uninstall_keys(None) {
         println!("query multi registry subkeys failed: {}", e);
     }
 
     use uuid::Uuid;
+
     let id = Uuid::new_v4();
     println!("uuid v4: {:?}", id);
 
