@@ -2,6 +2,7 @@
 
 sites
 
+.idea/
 .vscode/
 target/
 images/

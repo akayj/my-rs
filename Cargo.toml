@@ -13,8 +13,8 @@ edition = "2021"
 libc = "0.2"
 
 clap = { version = "3.2", features = ["derive"] }
-sysinfo = "0.24"
-systemstat = "0.1"
+sysinfo = "0.26.2"
+systemstat = "0.2.0"
 
 raw-cpuid = "10.3.0"
 
@@ -47,13 +47,13 @@ subprocess = "0.2.9"
 
 num_cpus = "1.0"
 emojis = "0.4.0"
-libp2p = "0.46.1"
+libp2p = "0.48.0"
 
 [target.'cfg(windows)'.dependencies]
 winreg = { version = "0.10.1" }
 
 [target.'cfg(windows)'.dependencies.windows]
-version = "0.39.0"
+version = "0.41.0"
 features = [
     "Data_Xml_Dom",
     "Win32_Foundation",
@@ -63,8 +63,8 @@ features = [
 ]
 
 [target.'cfg(unix)'.dependencies]
-nix = "0.24.1"
-sysctl = "0.4"
+nix = "0.25.0"
+sysctl = "0.5.2"
 
 [profile.dev]
 opt-level = 1

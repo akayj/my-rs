@@ -14,11 +14,12 @@ pub fn system_info() {
     log::debug!("=> disks:");
     for disk in sys.disks() {
         log::debug!(
-            "Name: {:?}, ({:?}, Free: ({:.1} GIB /{:.1} GIB)",
+            "Name: {:?}, ({:?}, Free: ({:.1} GIB /{:.1} GIB, {:.2}%)",
             disk.mount_point(),
             disk.type_(),
             human_size(disk.available_space(), GIB),
             human_size(disk.total_space(), GIB),
+            (disk.available_space() * 100) as f64 / disk.total_space() as f64,
         );
     }
 

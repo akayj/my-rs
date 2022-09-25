@@ -10,7 +10,6 @@ mod requests;
 mod serial;
 mod sys;
 mod tts;
-mod win;
 
 use std::time::Instant;
 
@@ -23,7 +22,7 @@ use crate::requests::{Douban, Downloader, HotGril};
 #[clap(
     version = "v0.1",
     author = "Developed by @akayj (Akayj)",
-    about = "Simple CLI Application that scrach content from web"
+    about = "Simple CLI Application that scratch content from web"
 )]
 /// Simple program to greet to person.
 struct Args {
@@ -161,9 +160,9 @@ fn full_info() {
     // }
 
     // if let Err(e) = sys::reg::query_uninstall_keys(Some("微信")) {
-    if let Err(e) = sys::reg::query_uninstall_keys(None) {
-        println!("query multi registry subkeys failed: {}", e);
-    }
+    // if let Err(e) = sys::reg::query_uninstall_keys(None) {
+    //     println!("query multi registry subkeys failed: {}", e);
+    // }
 
     use uuid::Uuid;
 
