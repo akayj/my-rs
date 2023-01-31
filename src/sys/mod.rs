@@ -2,6 +2,7 @@ mod battery;
 mod cpu;
 // mod mem;
 pub mod gpu;
+#[cfg(target_os = "windows")]
 pub mod reg;
 mod system;
 

@@ -27,7 +27,7 @@ use crate::requests::{Douban, Downloader, HotGril};
 /// Simple program to greet to person.
 struct Args {
     /// .toml config file name
-    #[clap(short, long, default_value_t = String::from("client.toml"), takes_value = true)]
+    #[clap(short, long, default_value_t = String::from("client.toml"))]
     config: String,
 
     /// log level
@@ -135,10 +135,7 @@ fn main() {
     // win::win_main();
 
     let flag = emojis::get_by_shortcode("hourglass").unwrap();
-    log::info!(target: "app_events",
-	       "{} execution cost {} secs",
-           flag,
-	       started.elapsed().as_secs_f64());
+    log::info!(target: "app_events", "{} execution cost {} secs", flag, started.elapsed().as_secs_f64());
 }
 
 fn full_info() {

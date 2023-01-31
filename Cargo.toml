@@ -12,18 +12,18 @@ edition = "2021"
 [dependencies]
 libc = "0.2"
 
-clap = { version = "3.2", features = ["derive"] }
-sysinfo = "0.26.2"
+clap = { version = "4.1", features = ["derive"] }
+sysinfo = "0.27"
 systemstat = "0.2.0"
 
 raw-cpuid = "10.3.0"
 
-scraper = "0.13.0"
+scraper = "0.14"
 
 serde = { version = "1.0.137", features = ["derive"] }
 serde_json = { version = "1.0.81" }
 log = "0.4.17"
-env_logger = "0.9.0"
+env_logger = "0.10"
 chrono = "0.4"
 
 reqwest = { version = "0.11", features = ["blocking", "json"] }
@@ -46,14 +46,14 @@ uuid = { version = "1.1.2", features = ["v4", "fast-rng"] }
 subprocess = "0.2.9"
 
 num_cpus = "1.0"
-emojis = "0.4.0"
-libp2p = "0.48.0"
+emojis = "0.5"
+libp2p = "0.50.0"
 
 [target.'cfg(windows)'.dependencies]
 winreg = { version = "0.10.1" }
 
 [target.'cfg(windows)'.dependencies.windows]
-version = "0.41.0"
+version = "0.44.0"
 features = [
     "Data_Xml_Dom",
     "Win32_Foundation",
@@ -63,7 +63,7 @@ features = [
 ]
 
 [target.'cfg(unix)'.dependencies]
-nix = "0.25.0"
+nix = "0.26.1"
 sysctl = "0.5.2"
 
 [profile.dev]
