@@ -25,32 +25,11 @@ fn main() {
 
     init_log(&args.log_level, &args.log_target);
 
-    system_info();
+    sys::full_info();
 
     sites::douban::download();
     // sites::hot::download(&args.site);
 
     let flag = emojis::get_by_shortcode("hourglass").unwrap();
     log::info!(target: "app_events", "{} execution cost {:.3} secs", flag, started.elapsed().as_secs_f64());
-}
-
-fn system_info() {
-    sys::system_info();
-    sys::cpu_info();
-
-    if let Err(e) = sys::battery_info() {
-        log::error!("bad things happend: {}", e);
-    }
-
-    // sys::systeminfo();
-    match sys::gpu::gpu_info() {
-        // Err(e) => println!("get gpu info error: {}", e),
-        Err(_) => (),
-        Ok(_) => println!("fetch gpu info ok"),
-    }
-
-    serial::serial_something();
-    if let Err(e) = serial::exec() {
-        println!("exec nvidia-smi.exe -L failed: {}", e);
-    }
 }

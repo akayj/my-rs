@@ -9,6 +9,7 @@ mod system;
 pub use self::battery::*;
 pub use self::cpu::*;
 // pub use self::mem::*;
+pub use self::gpu::*;
 pub use self::system::*;
 
 use systemstat::{Platform, System};
