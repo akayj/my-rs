@@ -1,31 +1,60 @@
-use clap::Parser;
+use clap::{Parser, ValueEnum};
 
+/// Simple program to greet to person.
 #[derive(Parser, Debug)]
-#[clap(
+#[command(
     version = "v0.1",
     author = "Developed by @akayj (Akayj)",
-    about = "Simple CLI Application that scratch content from web"
+    about = "Simple CLI Application that scratch content from web",
+    long_about = None
 )]
-/// Simple program to greet to person.
 pub struct Args {
-    /// .toml config file name
-    #[clap(short, long, default_value_t = String::from("client.toml"))]
+    /// config file name(TOML)
+    #[arg(short, long, default_value_t = String::from("client.toml"))]
     pub config: String,
 
     /// log level
-    #[clap(short, long, default_value_t = String::from("debug"))]
+    #[arg(short, long, default_value_t = String::from("debug"))]
     pub log_level: String,
 
     /// log target
-    #[clap(short = 't', long, default_value_t = String::from("stderr"))]
+    #[arg(short = 't', long, default_value_t = String::from("stderr"))]
     pub log_target: String,
 
     /// site file
-    #[clap(short, long, default_value_t = String::from("sites"))]
+    #[arg(short, long, default_value_t = String::from("sites"))]
     pub site: String,
+
+    #[arg(short, long, action = clap::ArgAction::Count)]
+    verbose: u8,
+
+    /// Network port to use
+    #[arg(value_parser = clap::value_parser!(u16).range(1..))]
+    port: u16,
+}
+
+#[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]
+enum Mode {
+    /// Run swiftly
+    Fast,
+    /// Crawl slowly but steadily
+    Slow,
 }
 
 pub fn parse_args() -> Args {
     // let args = Args::parse();
-    Args::parse()
+    let args = Args::parse();
+
+    println!("args: {:?}", args);
+
+    match args.mode {
+        Mode::Fast => {
+            println!("Hare");
+        }
+        Mode::Slow => {
+            println!("Tortoise");
+        }
+    }
+
+    args
 }

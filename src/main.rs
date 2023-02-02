@@ -25,12 +25,10 @@ fn main() {
 
     init_log(&args.log_level, &args.log_target);
 
-    log::debug!("args: {:?}", args);
-
     system_info();
 
-    sites::douban::download();
-    sites::hot::download(&args.site);
+    // sites::douban::download();
+    // sites::hot::download(&args.site);
 
     let flag = emojis::get_by_shortcode("hourglass").unwrap();
     log::info!(target: "app_events", "{} execution cost {:.3} secs", flag, started.elapsed().as_secs_f64());
@@ -46,14 +44,10 @@ fn system_info() {
 
     // sys::systeminfo();
     match sys::gpu::gpu_info() {
-        Err(e) => println!("get gpu info error: {}", e),
-        Ok(_) => (),
+        // Err(e) => println!("get gpu info error: {}", e),
+        Err(_) => (),
+        Ok(_) => println!("fetch gpu info ok"),
     }
-
-    use uuid::Uuid;
-
-    let id = Uuid::new_v4();
-    println!("uuid v4: {:?}", id);
 
     serial::serial_something();
     if let Err(e) = serial::exec() {

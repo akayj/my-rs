@@ -11,15 +11,21 @@ pub fn system_info() {
     let mut sys = System::new_all();
     sys.refresh_all();
 
-    println!("System name: {:?}", sys.name());
-    println!("System kernel version: {:?}", sys.kernel_version());
-    println!("System OS version: {:?}", sys.os_version());
-    println!("System host name: {:?}", sys.host_name());
+    println!("System name: {}", sys.name().unwrap_or_default());
+    println!(
+        "System kernel version: {}",
+        sys.kernel_version().unwrap_or_default()
+    );
+    println!(
+        "System OS version: {}",
+        sys.os_version().unwrap_or_default()
+    );
+    println!("System host name: {}", sys.host_name().unwrap_or_default());
 
     log::debug!("=> disks:");
     for disk in sys.disks() {
         log::debug!(
-            "Name: {:?}, ({:?}, Free: ({:.1} GIB /{:.1} GIB, {:.2}%)",
+            "Name: {:?}, ({:?}, Free: ({:.1} GiB /{:.1} GiB, {:.2}%)",
             disk.mount_point(),
             disk.type_(),
             human_size(disk.available_space(), GIB),
