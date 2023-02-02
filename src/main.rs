@@ -28,7 +28,7 @@ fn main() {
     sys::full_info();
 
     sites::douban::download();
-    // sites::hot::download(&args.site);
+    sites::hot::download(&args.site);
 
     let flag = emojis::get_by_shortcode("hourglass").unwrap();
     log::info!(target: "app_events", "{} execution cost {:.3} secs", flag, started.elapsed().as_secs_f64());
