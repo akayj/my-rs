@@ -38,7 +38,7 @@ anyhow = "1.0"
 
 futures = "0.3"
 battery = "0.7.8"
-nvml-wrapper = "0.8.0"
+nvml-wrapper = "0.9"
 pretty-bytes = "0.2"
 
 uuid = { version = "1.1.2", features = ["v4", "fast-rng"] }
