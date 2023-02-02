@@ -22,9 +22,10 @@ pub struct Args {
     pub log_target: String,
 
     /// site file
-    #[arg(short, long, default_value_t = String::from("links"))]
-    pub site: String,
+    #[arg(short, long)]
+    pub site: Option<String>,
 
+    // pub site: String,
     #[arg(short, long, action = clap::ArgAction::Count)]
     verbose: u8,
 }
