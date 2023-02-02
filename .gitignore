@@ -1,9 +1,8 @@
 .DS_Store
 
-sites
+links
 
 .idea/
 .vscode/
 target/
 images/
-

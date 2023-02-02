@@ -27,7 +27,7 @@ fn main() {
 
     system_info();
 
-    // sites::douban::download();
+    sites::douban::download();
     // sites::hot::download(&args.site);
 
     let flag = emojis::get_by_shortcode("hourglass").unwrap();
