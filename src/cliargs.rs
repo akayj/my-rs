@@ -27,14 +27,9 @@ pub struct Args {
 
     #[arg(short, long, action = clap::ArgAction::Count)]
     verbose: u8,
-
-    /// Network port to use
-    #[arg(value_parser = clap::value_parser!(u16).range(1..))]
-    port: u16,
 }
 
 pub fn parse_args() -> Args {
-    // let args = Args::parse();
     let args = Args::parse();
 
     println!("args: {:?}", args);
