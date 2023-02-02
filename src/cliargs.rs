@@ -33,28 +33,11 @@ pub struct Args {
     port: u16,
 }
 
-#[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]
-enum Mode {
-    /// Run swiftly
-    Fast,
-    /// Crawl slowly but steadily
-    Slow,
-}
-
 pub fn parse_args() -> Args {
     // let args = Args::parse();
     let args = Args::parse();
 
     println!("args: {:?}", args);
-
-    match args.mode {
-        Mode::Fast => {
-            println!("Hare");
-        }
-        Mode::Slow => {
-            println!("Tortoise");
-        }
-    }
 
     args
 }
