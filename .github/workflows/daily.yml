@@ -38,8 +38,16 @@ jobs:
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: public
+          folder: images
           token: ${{ secrets.ACCESS_TOKEN }}
           branch: images
           git-config-name: akayj-gh-action
           git-config-email: akayj-gh-action@github.com
+
+      - name: WeChat Work notification by text
+        uses: chf007/action-wechat-work@master
+        env:
+          WECHAT_WORK_BOT_WEBHOOK: ${{secrets.WECHAT_WORK_BOT_WEBHOOK}}
+        with:
+          msgtype: text
+          content: "下载图片成功， 查看 github.com/akayj/my-rs@images"
