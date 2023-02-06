@@ -34,3 +34,12 @@ jobs:
 
       - name: Show images
         run: ls ./images
+
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: public
+          token: ${{ secrets.ACCESS_TOKEN }}
+          branch: images
+          git-config-name: akayj-gh-action
+          git-config-email: akayj-gh-action@github.com
