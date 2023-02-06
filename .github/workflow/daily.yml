@@ -1,0 +1,29 @@
+name: Daily Crawl
+
+on:
+  schedule:
+    - cron: '59 23 * * *'
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      RUST_VERSION: 1.67.0
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Switch Rust version
+        run: rustup default ${RUST_VERSION}
+
+      - name: Build
+        run: cargo build --verbose
+
+      - name: Run
+        run: cargo run
+
+      - name: Show images
+        run: ls ./images
