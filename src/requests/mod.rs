@@ -35,11 +35,12 @@ pub fn simple_download(title: &str, url: &str, target_dir: &str) -> Result<i64> 
     }
 
     let resp = ureq::get(url)
+        .set("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9")
         .set(
             "User-Agent",
-            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:98.0) Gecko/20100101 Firefox/98.0",
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 Edg/109.0.1518.78",
         )
-        .set("Referer", url)
+        // .set("Referer", url)
         .call()?;
 
     if resp.status() != 200 {
