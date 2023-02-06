@@ -4,6 +4,13 @@ on:
   schedule:
     - cron: '59 23 * * *'
 
+  workflow_dispatch:
+    
+
+defaults:
+  run:
+    shell: bash
+
 env:
   CARGO_TERM_COLOR: always
 
