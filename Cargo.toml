@@ -16,20 +16,20 @@ clap = { version = "4.1", features = ["derive"] }
 sysinfo = "0.27"
 systemstat = "0.2.0"
 
-raw-cpuid = "10.3.0"
+raw-cpuid = "10.6"
 
 scraper = "0.14"
 
-serde = { version = "1.0.137", features = ["derive"] }
-serde_json = { version = "1.0.81" }
+serde = { version = "1.0.152", features = ["derive"] }
+serde_json = { version = "1.0.92" }
 log = "0.4.17"
 env_logger = "0.10"
 chrono = "0.4"
 
 reqwest = { version = "0.11", features = ["blocking", "json"] }
-tokio = { version = "1.19", features = ["full"] }
+tokio = { version = "1.25", features = ["full"] }
 
-ureq = { version = "2.4", features = ["json"] }
+ureq = { version = "2.6", features = ["json"] }
 
 notify-rust = "4"
 
@@ -63,8 +63,8 @@ features = [
 ]
 
 [target.'cfg(unix)'.dependencies]
-nix = "0.26.1"
-sysctl = "0.5.2"
+nix = "0.26"
+sysctl = "0.5"
 
 [profile.dev]
 opt-level = 1
