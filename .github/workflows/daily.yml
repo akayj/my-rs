@@ -49,6 +49,6 @@ jobs:
         env:
           WECHAT_WORK_BOT_WEBHOOK: ${{secrets.WECHAT_WORK_BOT_WEBHOOK}}
         with:
-          url: ${{secrets.WECHAT_WORK_BOT_WEBHOOK}}
+          url: https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=${{secrets.WECHAT_WORK_BOT_WEBHOOK}}
           type: text
           content: "下载图片成功， 查看 github.com/akayj/my-rs@images"
