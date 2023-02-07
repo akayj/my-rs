@@ -6,16 +6,13 @@ on:
 
   workflow_dispatch:
 
-env:
-  TZ: "Asia/Shanghai"
-    
-
 defaults:
   run:
     shell: bash
 
 env:
   CARGO_TERM_COLOR: always
+  TZ: "Asia/Shanghai"
 
 jobs:
   build:
