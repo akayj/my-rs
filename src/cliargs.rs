@@ -1,4 +1,4 @@
-use clap::{Parser, ValueEnum};
+use clap::Parser;
 
 /// Simple program to greet to person.
 #[derive(Parser, Debug)]
