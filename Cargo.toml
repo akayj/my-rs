@@ -14,14 +14,14 @@ libc = "0.2"
 
 clap = { version = "4.1", features = ["derive"] }
 sysinfo = "0.27"
-systemstat = "0.2.0"
+systemstat = "0.2"
 
 raw-cpuid = "10.6"
 
 scraper = "0.14"
 
 serde = { version = "1.0.152", features = ["derive"] }
-serde_json = { version = "1.0.92" }
+serde_json = { version = "1.0.93" }
 log = "0.4.17"
 env_logger = "0.10"
 chrono = "0.4"
@@ -45,7 +45,7 @@ pretty-bytes = "0.2"
 
 subprocess = "0.2.9"
 
-num_cpus = "1.0"
+num_cpus = "1.15"
 emojis = "0.5"
 # libp2p = "0.50.0"
 
