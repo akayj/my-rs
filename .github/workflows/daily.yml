@@ -51,4 +51,4 @@ jobs:
         with:
           url: https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=${{secrets.WECHAT_WORK_BOT_WEBHOOK}}
           type: text
-          content: "下载图片成功， 查看 github.com/akayj/my-rs@images"
+          content: "下载图片成功， 查看 https://github.com/akayj/my-rs/tree/images "
