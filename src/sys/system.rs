@@ -80,7 +80,10 @@ pub fn full_info() {
     }
 
     serial::serial_something();
-    if let Err(e) = serial::exec() {
-        println!("exec nvidia-smi.exe -L failed: {}", e);
+
+    if cfg!(target_os = "windows") {
+        if let Err(e) = serial::exec() {
+            println!("exec nvidia-smi.exe -L failed: {}", e);
+        }
     }
 }
