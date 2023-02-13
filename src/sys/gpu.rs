@@ -46,7 +46,7 @@ memory usage is {used_mem} out of an available {total_mem}
         brand = brand,
         fan_speed = fan_speed,
         power_limit = power_limit / 1000,
-        used_mem = convert(mem_info.used as _),
+        used_mem = convert(mem_info.used as f64),
         total_mem = convert(mem_info.total as _)
     );
 

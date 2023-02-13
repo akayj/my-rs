@@ -87,3 +87,13 @@ pub fn full_info() {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_human_size() {
+        assert_eq!(human_size(1024, 1024), 1f64)
+    }
+}
