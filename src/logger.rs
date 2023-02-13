@@ -28,7 +28,7 @@ pub fn init_log(log_level: &str, log_target: &str) {
                 record.args()
             )
         })
-        .filter(Some("my_rs"), level)
+        .filter(Some("myrs"), level)
         .filter(Some("app_events"), log::LevelFilter::Debug)
         .try_init()
     {
