@@ -31,7 +31,7 @@ pub fn gpu_info() -> Result<(), anyhow::Error> {
     println!(
         "GPU: {name} (architecture: {architecture})
 CUDA cores: {cuda_cores}
-temperature: {temp} C 
+temperature: {temp} C
 graphics clock: {graphics_clock} MHz
 brand: {brand:?}
 fan_speed: {fan_speed}
