@@ -1,7 +1,7 @@
 use anyhow::{anyhow, Result};
 use serde::Deserialize;
 
-use super::{Douban, Downloader};
+use super::Downloader;
 
 #[derive(Debug)]
 pub struct LinkMeta {
@@ -21,6 +21,8 @@ pub struct MovieLink {
 pub struct Movies {
     pub subjects: Vec<MovieLink>,
 }
+
+pub struct Douban(pub String, pub String);
 
 impl Douban {
     pub fn new<S: Into<String>>(site: S, target_dir: S) -> Self {
@@ -63,7 +65,7 @@ impl Downloader for Douban {
                     let rate = link.rate.parse::<f64>().unwrap_or(0f64);
 
                     if rate < 7.0 {
-                        log::warn!("{} rate is too low {}, ignore it", link.title, rate);
+                        log::warn!("{} rate {} (too low), ignore it", link.title, rate);
                         continue;
                     }
 

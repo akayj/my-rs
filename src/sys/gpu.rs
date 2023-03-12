@@ -11,6 +11,7 @@ pub fn gpu_info() -> Result<(), anyhow::Error> {
     let device = nvml.device_by_index(0)?;
 
     let name = device.name()?;
+    // TODO: this is todo test
     let temp = device.temperature(TemperatureSensor::Gpu)?;
     let mem_info = device.memory_info()?;
     let graphics_clock = device.clock_info(Clock::Graphics)?;

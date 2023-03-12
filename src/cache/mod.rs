@@ -11,17 +11,3 @@ where
     let file = File::open(filename)?;
     Ok(io::BufReader::new(file).lines())
 }
-
-// pub fn lines(filename: &str) -> Vec<&str> {
-//     let mut lines_vec = vec![];
-
-//     if let Ok(lines) = read_lines(filename) {
-//         for line in lines {
-//             if let Ok(li) = line {
-//                 lines_vec.push(li.clone().as_str());
-//             }
-//         }
-//     }
-
-//     lines_vec
-// }

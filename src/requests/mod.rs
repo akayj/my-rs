@@ -1,11 +1,11 @@
-pub mod douban;
-pub mod hot;
-pub mod traits;
+mod douban;
+mod hot;
+mod wallpaper;
 
 use std::io::{Cursor, Read};
 
 use anyhow::{anyhow, Result};
-use reqwest::header::{HeaderMap, HeaderValue, REFERER, USER_AGENT};
+use reqwest::header::{HeaderMap, HeaderValue, REFERER, USER_AGENT, ACCEPT};
 
 fn build_cross_headers(refer: &str) -> HeaderMap {
     let mut headers = HeaderMap::new();
@@ -16,12 +16,12 @@ fn build_cross_headers(refer: &str) -> HeaderMap {
         // Firefox:
         // "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:98.0) Gecko/20100101 Firefox/98.0"
         HeaderValue::from_static(
-            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:98.0) Gecko/20100101 Firefox/98.0",
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 Edg/109.0.1518.78",
         ),
     );
 
     headers.insert(REFERER, HeaderValue::from_str(refer).unwrap());
-    // headers.insert(ACCEPT, HeaderValue::from_static("text/html;image/webp"));
+    headers.insert(ACCEPT, HeaderValue::from_static("text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"));
 
     headers
 }
@@ -59,9 +59,6 @@ pub fn simple_download(title: &str, url: &str, target_dir: &str) -> Result<i64> 
     }
 }
 
-pub struct Douban(pub String, pub String);
-pub struct HotGril(pub String, pub String);
-
 pub trait Downloader {
     fn download(&self) -> Result<()>;
 }
@@ -69,3 +66,7 @@ pub trait Downloader {
 pub trait DownloadHelper {
     fn help(&self) -> Result<()>;
 }
+
+pub use self::douban::Douban;
+pub use self::hot::HotGril;
+pub use self::wallpaper::WallPaper;

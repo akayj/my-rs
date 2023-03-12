@@ -14,12 +14,12 @@ path = "src/main.rs"
 libc = "0.2"
 
 clap = { version = "4.1", features = ["derive"] }
-sysinfo = "0.27"
+sysinfo = "0.28"
 systemstat = "0.2"
 
 raw-cpuid = "10.6"
 
-scraper = "0.14"
+scraper = "0.15"
 
 serde = { version = "1.0.152", features = ["derive"] }
 serde_json = { version = "1.0.93" }
@@ -50,7 +50,7 @@ emojis = "0.5"
 # libp2p = "0.50.0"
 
 [target.'cfg(windows)'.dependencies]
-winreg = { version = "0.10.1" }
+winreg = { version = "0.11" }
 
 [target.'cfg(windows)'.dependencies.windows]
 version = "0.44.0"

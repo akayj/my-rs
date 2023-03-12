@@ -23,7 +23,7 @@ pub fn download(site_file: &str) {
                 sites.push(line);
             }
 
-            // handle every site
+            // handle every sites
             for ref site in sites {
                 let dl = HotGril::new(site, &String::from("images/hot"));
                 if let Err(e) = dl.download() {

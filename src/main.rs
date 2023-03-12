@@ -28,6 +28,7 @@ fn main() {
     sys::full_info();
 
     sites::douban::download();
+    sites::wallpaper::download();
 
     if let Some(site_file) = args.site {
         sites::hot::download(&site_file);
