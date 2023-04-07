@@ -18,7 +18,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      RUST_VERSION: 1.68.0
+      RUST_VERSION: 1.68.2
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
