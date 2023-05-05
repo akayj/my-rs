@@ -1,4 +1,4 @@
-use crate::requests::{Downloader, HotGril};
+use crate::requests::{Downloader, HotGirl};
 use crate::{cache, notify};
 
 pub fn download(site_file: &str) {
@@ -25,7 +25,7 @@ pub fn download(site_file: &str) {
 
             // handle every sites
             for ref site in sites {
-                let dl = HotGril::new(site, &String::from("images/hot"));
+                let dl = HotGirl::new(site, &String::from("images/hot"));
                 if let Err(e) = dl.download() {
                     log::error!("download images from page `{}` failed: {}", site, e);
                 } else {

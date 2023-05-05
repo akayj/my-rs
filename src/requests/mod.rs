@@ -5,7 +5,7 @@ mod wallpaper;
 use std::io::{Cursor, Read};
 
 use anyhow::{anyhow, Result};
-use reqwest::header::{HeaderMap, HeaderValue, REFERER, USER_AGENT, ACCEPT};
+use reqwest::header::{HeaderMap, HeaderValue, ACCEPT, REFERER, USER_AGENT};
 
 fn build_cross_headers(refer: &str) -> HeaderMap {
     let mut headers = HeaderMap::new();
@@ -68,5 +68,5 @@ pub trait DownloadHelper {
 }
 
 pub use self::douban::Douban;
-pub use self::hot::HotGril;
+pub use self::hot::HotGirl;
 pub use self::wallpaper::WallPaper;

@@ -22,11 +22,19 @@ pub struct Movies {
     pub subjects: Vec<MovieLink>,
 }
 
-pub struct Douban(pub String, pub String);
+// pub struct Douban(pub String, pub String);
+
+pub struct Douban {
+    pub site: String,
+    pub target_dir: String,
+}
 
 impl Douban {
     pub fn new<S: Into<String>>(site: S, target_dir: S) -> Self {
-        Self(site.into(), target_dir.into())
+        Self {
+            site: site.into(),
+            target_dir: target_dir.into(),
+        }
     }
 }
 
@@ -46,15 +54,15 @@ pub fn fetch_movie_links_json(site: &str) -> Result<Movies> {
 
 impl Downloader for Douban {
     fn download(&self) -> Result<()> {
-        match fetch_movie_links_json(self.0.as_str()) {
+        match fetch_movie_links_json(self.site.as_str()) {
             Ok(Movies { subjects }) => {
                 if subjects.is_empty() {
                     return Err(anyhow!("no link found"));
                 }
 
-                if let Err(e) = std::fs::create_dir_all(self.1.as_str()) {
-                    log::error!("create '{}' failed: {}", self.1, e);
-                    return Err(anyhow!("create '{}' failed: {}", self.1, e));
+                if let Err(e) = std::fs::create_dir_all(self.target_dir.as_str()) {
+                    log::error!("create '{}' failed: {}", self.target_dir, e);
+                    return Err(anyhow!("create '{}' failed: {}", self.target_dir, e));
                 }
 
                 let mut index = 1u8;
@@ -70,7 +78,11 @@ impl Downloader for Douban {
                     }
 
                     // match super::download(&link.title, &link.cover, self.1.as_str()) {
-                    match super::simple_download(&link.title, &link.cover, self.1.as_str()) {
+                    match super::simple_download(
+                        &link.title,
+                        &link.cover,
+                        &self.target_dir.as_str(),
+                    ) {
                         Ok(0) => log::error!("download `{}` failed", link.cover),
                         Ok(-1) => log::debug!("{} already download", link.title),
                         Ok(bytes) => {
