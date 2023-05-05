@@ -2,7 +2,7 @@ name: Daily Crawl
 
 on:
   schedule:
-    - cron: '59 23 * * *'
+    - cron: "59 23 * * *"
 
   workflow_dispatch:
 
@@ -18,7 +18,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      RUST_VERSION: 1.68.2
+      RUST_VERSION: 1.69.0
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3

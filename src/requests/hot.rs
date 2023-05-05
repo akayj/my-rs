@@ -28,7 +28,7 @@ impl Downloader for HotGril {
         let document = Html::parse_document(&text);
         let selector = Selector::parse(r#"main > ul > li a.u-thumb-v > img"#).unwrap();
 
-        if let Err(e) = std::fs::create_dir_all(self.1.as_str()) {
+        if let Err(e) = std::fs::create_dir_all(self.1.to_owned()) {
             return Err(anyhow!("create '{}' failed: {}", self.1, e));
         }
 
