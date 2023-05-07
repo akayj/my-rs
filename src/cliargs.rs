@@ -48,8 +48,6 @@ pub enum SiteCommands {
     Info,
 }
 
-const PORT_RANGE: RangeInclusive<usize> = 1..=65535;
-
 pub fn parse_args() -> Args {
     let args = Args::parse();
 
