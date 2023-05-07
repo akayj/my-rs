@@ -30,7 +30,7 @@ jobs:
         run: cargo build --verbose
 
       - name: Run
-        run: cargo run
+        run: cargo run -- douban
 
       - name: Show images
         run: ls ./images
