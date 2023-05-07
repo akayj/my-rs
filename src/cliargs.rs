@@ -1,5 +1,3 @@
-use std::ops::RangeInclusive;
-
 use clap::{Parser, Subcommand};
 
 /// Simple CLI that scratch images from website.
