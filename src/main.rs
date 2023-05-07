@@ -1,18 +1,6 @@
 /* #[macro_use] */
 extern crate log;
 
-mod cache;
-mod cliargs;
-mod ffi;
-mod lifetime;
-mod logger;
-mod notify;
-mod requests;
-mod serial;
-mod sites;
-mod sys;
-mod tts;
-
 use std::thread;
 use std::time::{Duration, Instant};
 use std::{cmp::min, fmt::Write};
@@ -21,6 +9,15 @@ use indicatif::{ProgressBar, ProgressState, ProgressStyle};
 
 use crate::cliargs::{parse_args, SiteCommands};
 use crate::logger::init_log;
+
+mod cache;
+mod cliargs;
+mod lifetime;
+mod logger;
+mod notify;
+mod requests;
+mod sites;
+mod sys;
 
 fn main() {
     let started = Instant::now();
@@ -43,8 +40,8 @@ fn main() {
             sites::douban::download("E://images/douban");
         }
 
-        SiteCommands::Wallpaper { name } => {
-            println!("wallpaper site name is {name:?}");
+        SiteCommands::Wallpaper { size } => {
+            println!("request wallpaper size is {size:?}");
             sites::wallpaper::download("E://images/wallpapers");
         }
     }

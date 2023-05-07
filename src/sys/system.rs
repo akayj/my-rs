@@ -1,6 +1,6 @@
-use crate::serial;
-use crate::sys::{battery_info, cpu_info, gpu_info};
 use sysinfo::{DiskExt, System, SystemExt};
+
+use crate::sys::{battery_info, cpu_info, gpu_info};
 
 // const KB: u64 = 1 << 10;
 const MIB: u64 = 1 << 20;
@@ -69,7 +69,7 @@ pub fn full_info() {
     cpu_info();
 
     if let Err(e) = battery_info() {
-        log::error!("bad things happend: {}", e);
+        log::error!("bad things happened: {}", e);
     }
 
     // sys::systeminfo();
@@ -77,14 +77,6 @@ pub fn full_info() {
         // Err(e) => println!("get gpu info error: {}", e),
         Err(_) => (),
         Ok(_) => println!("fetch gpu info ok"),
-    }
-
-    serial::serial_something();
-
-    if cfg!(windows) {
-        if let Err(e) = serial::exec() {
-            println!("exec nvidia-smi.exe -L failed: {}", e);
-        }
     }
 }
 

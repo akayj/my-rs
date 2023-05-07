@@ -3,6 +3,7 @@ use clap::{Parser, Subcommand};
 /// Simple CLI that scratch images from website.
 #[derive(Parser, Debug)]
 #[command(
+    name = "myrs",
     version = "v0.1",
     author = "Developed by @akayj (Akayj)",
     about = "Simple CLI that scratch images from website"
@@ -33,7 +34,7 @@ pub enum SiteCommands {
     Douban { name: Option<String> },
 
     /// Wallpaper from wallpaperhub.app
-    Wallpaper { name: Option<String> },
+    Wallpaper { size: Option<String> },
 
     /// Hot images
     Hot {

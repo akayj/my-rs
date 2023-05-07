@@ -1,9 +1,15 @@
+use reqwest::header::{HeaderMap, HeaderValue, ACCEPT, REFERER, USER_AGENT};
+
+pub use download::{simple_download, DownloadHelper, Downloader};
+
+pub use self::douban::Douban;
+pub use self::hot::HotGirl;
+pub use self::wallpaper::WallPaper;
+
 mod douban;
 mod download;
 mod hot;
 mod wallpaper;
-
-use reqwest::header::{HeaderMap, HeaderValue, ACCEPT, REFERER, USER_AGENT};
 
 fn build_cross_headers(refer: &str) -> HeaderMap {
     let mut headers = HeaderMap::new();
@@ -29,8 +35,3 @@ fn build_cross_headers(refer: &str) -> HeaderMap {
 
     headers
 }
-
-pub use self::douban::Douban;
-pub use self::hot::HotGirl;
-pub use self::wallpaper::WallPaper;
-pub use download::{simple_download, DownloadHelper, Downloader};
