@@ -3,29 +3,31 @@
 use super::Downloader;
 use anyhow::Result;
 
-pub struct WallPaper(pub String, pub String);
+pub struct WallPaper {
+    pub site: String,
+    pub target_dir: String,
+}
 
 impl WallPaper {
     pub fn new<S: Into<String>>(site: S, target_dir: S) -> Self {
-        Self(site.into(), target_dir.into())
+        Self {
+            site: site.into(),
+            target_dir: target_dir.into(),
+        }
     }
 }
 
-fn fetch_image_list() {
-
-}
+fn fetch_image_list() {}
 
 impl Downloader for WallPaper {
-
     fn download(&self) -> Result<()> {
-        println!("hello WallPaper download");
-
         // let header = build_cross_headers(self.1.as_str());
 
-        let client = ureq::get(self.0.as_str())
+        let resp = ureq::get(self.site.as_str())
             .set("Referer", "https://www.google.com")
-            .call()?
-            .into_json()?;
+            .call()?;
+
+        println!("wallpaper request status: {}", resp.status());
 
         Ok(())
     }

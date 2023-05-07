@@ -1,12 +1,13 @@
-use clap::Parser;
+use std::ops::RangeInclusive;
 
-/// Simple program to greet to person.
+use clap::{Parser, Subcommand};
+
+/// Simple CLI that scratch images from website.
 #[derive(Parser, Debug)]
 #[command(
     version = "v0.1",
     author = "Developed by @akayj (Akayj)",
-    about = "Simple CLI Application that scratch content from web",
-    long_about = None
+    about = "Simple CLI that scratch images from website"
 )]
 pub struct Args {
     /// config file name(TOML)
@@ -21,14 +22,33 @@ pub struct Args {
     #[arg(short = 't', long, default_value_t = String::from("stderr"))]
     pub log_target: String,
 
-    /// site file
-    #[arg(short, long)]
-    pub site: Option<String>,
-
-    // pub site: String,
     #[arg(short, long, action = clap::ArgAction::Count)]
-    verbose: u8,
+    pub(crate) verbose: u8,
+
+    #[command(subcommand)]
+    pub(crate) command: SiteCommands,
 }
+
+#[derive(Debug, Subcommand)]
+pub enum SiteCommands {
+    /// fetch movies' images from douban
+    Douban { name: Option<String> },
+
+    /// Wallpaper from wallpaperhub.app
+    Wallpaper { name: Option<String> },
+
+    /// Hot images
+    Hot {
+        /// site list file
+        #[arg(short, long, default_value_t = String::from("links"))]
+        site: String,
+    },
+
+    /// System info
+    Info,
+}
+
+const PORT_RANGE: RangeInclusive<usize> = 1..=65535;
 
 pub fn parse_args() -> Args {
     let args = Args::parse();

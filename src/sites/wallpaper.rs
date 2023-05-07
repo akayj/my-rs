@@ -1,8 +1,8 @@
-use crate::requests::{WallPaper,Downloader};
+use crate::requests::{Downloader, WallPaper};
 
-pub fn download() {
-    let url = "https://wallhaven.cc/w/yxx3kd";
-    let website = WallPaper::new(url, "image/wallpaper");
+pub fn download(target_dir: &str) {
+    let url = "https://wallpaperhub.app/";
+    let website = WallPaper::new(url, target_dir);
     if let Err(e) = website.download() {
         log::error!("{}", e);
     }
