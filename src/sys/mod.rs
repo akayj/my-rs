@@ -1,20 +1,20 @@
+use systemstat::{Platform, System};
+
+pub use self::battery::*;
+#[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
+pub use self::cpu::*;
+// pub use self::mem::*;
+pub use self::gpu::*;
+pub use self::system::*;
+
 mod battery;
-#[cfg(target_arch = "x86")]
+#[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
 mod cpu;
 // mod mem;
 pub mod gpu;
 #[cfg(target_os = "windows")]
 pub mod reg;
 mod system;
-
-pub use self::battery::*;
-#[cfg(target_arch = "x86")]
-pub use self::cpu::*;
-// pub use self::mem::*;
-pub use self::gpu::*;
-pub use self::system::*;
-
-use systemstat::{Platform, System};
 
 pub fn systeminfo() {
     let sys = System::new();
