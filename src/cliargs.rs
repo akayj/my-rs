@@ -44,6 +44,9 @@ pub enum SiteCommands {
         /// site list file
         #[arg(short, long, default_value_t = String::from("links"))]
         site: String,
+
+        #[arg(short, default_value_t = String::from("./images/hot"))]
+        target_dir: String,
     },
 
     /// System info

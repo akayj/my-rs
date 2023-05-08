@@ -1,7 +1,7 @@
 use crate::requests::{Downloader, HotGirl};
 use crate::{cache, notify};
 
-pub fn download(site_file: &str) {
+pub fn download(site_file: &str, target_dir: &str) {
     let mut sites = vec![];
 
     match cache::read_lines(site_file) {
@@ -25,7 +25,7 @@ pub fn download(site_file: &str) {
 
             // handle every sites
             for ref site in sites {
-                let dl = HotGirl::new(site, &String::from("images/hot"));
+                let dl = HotGirl::new(site, &target_dir.to_string());
                 if let Err(e) = dl.download() {
                     log::error!("download images from page `{}` failed: {}", site, e);
                 } else {

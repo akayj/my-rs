@@ -30,9 +30,9 @@ fn main() {
             sys::full_info();
         }
 
-        SiteCommands::Hot { site } => {
+        SiteCommands::Hot { site, target_dir } => {
             println!("hot site is {site:?}");
-            sites::hot::download(site);
+            sites::hot::download(site, target_dir);
         }
 
         SiteCommands::Douban { target_dir } => {
