@@ -1,6 +1,8 @@
 use sysinfo::{DiskExt, System, SystemExt};
 
-use crate::sys::{battery_info, cpu_info, gpu_info};
+use crate::sys::{battery_info, gpu_info};
+#[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
+use crate::sys::cpu_info;
 
 // const KB: u64 = 1 << 10;
 const MIB: u64 = 1 << 20;
@@ -66,7 +68,8 @@ fn human_size(x: u64, unit: u64) -> f64 {
 
 pub fn full_info() {
     system_info();
-    cpu_info();
+
+    // cpu_info();
 
     if let Err(e) = battery_info() {
         log::error!("bad things happened: {}", e);

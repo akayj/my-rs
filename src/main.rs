@@ -35,9 +35,9 @@ fn main() {
             sites::hot::download(site);
         }
 
-        SiteCommands::Douban { name } => {
-            println!("douban site name is {name:?}");
-            sites::douban::download("E://images/douban");
+        SiteCommands::Douban { target_dir } => {
+            println!("douban target dir is {target_dir:?}");
+            sites::douban::download(target_dir);
         }
 
         SiteCommands::Wallpaper { size } => {

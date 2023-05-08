@@ -1,4 +1,5 @@
 mod battery;
+#[cfg(target_arch = "x86")]
 mod cpu;
 // mod mem;
 pub mod gpu;
@@ -7,6 +8,7 @@ pub mod reg;
 mod system;
 
 pub use self::battery::*;
+#[cfg(target_arch = "x86")]
 pub use self::cpu::*;
 // pub use self::mem::*;
 pub use self::gpu::*;

@@ -31,7 +31,10 @@ pub struct Args {
 #[derive(Debug, Subcommand)]
 pub enum SiteCommands {
     /// fetch movies' images from douban
-    Douban { name: Option<String> },
+    Douban {
+        #[arg(short, default_value_t = String::from("./images/douban"))]
+        target_dir: String,
+    },
 
     /// Wallpaper from wallpaperhub.app
     Wallpaper { size: Option<String> },
