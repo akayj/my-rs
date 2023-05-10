@@ -61,4 +61,12 @@ pub fn systeminfo() {
         Ok(power) => println!(", AC power: {}", power),
         Err(e) => println!(", AC power: error: {}", e),
     }
+
+    // if cfg!(target_os = "windows") {
+    if cfg!(windows) {
+        println!("fetch registry info under windows");
+        if let Err(e) = reg::query_uninstall_keys(Some("python")) {
+            println!("found an error {:?}", e);
+        }
+    }
 }
