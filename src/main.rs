@@ -1,9 +1,8 @@
 /* #[macro_use] */
 extern crate log;
 
-use std::thread;
 use std::time::{Duration, Instant};
-use std::{cmp::min, fmt::Write};
+use std::{cmp::min, fmt::Write, thread};
 
 use indicatif::{ProgressBar, ProgressState, ProgressStyle};
 
