@@ -26,8 +26,8 @@ fn main() {
 
     match &args.command {
         SiteCommands::Info => {
-            // sys::full_info();
-            sys::systeminfo()
+            sys::full_info();
+            // sys::systeminfo()
         }
 
         SiteCommands::Hot { site, target_dir } => {

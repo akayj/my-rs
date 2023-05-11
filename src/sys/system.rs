@@ -29,9 +29,10 @@ pub fn system_info() {
     log::debug!("=> disks:");
     for disk in sys.disks() {
         log::debug!(
-            "Name: {:?}, ({:?}, Free: ({:.1} GiB /{:.1} GiB, {:.2}%)",
+            "Name: {:?}, {:?}, FS: {} Free: ({:.1} GiB /{:.1} GiB, {:.2}%)",
+            disk.name(),
             disk.mount_point(),
-            disk.type_(),
+std::str::from_utf8(disk.file_system()).unwrap(),
             human_size(disk.available_space(), GIB),
             human_size(disk.total_space(), GIB),
             (disk.available_space() * 100) as f64 / disk.total_space() as f64,
