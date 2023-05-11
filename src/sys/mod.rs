@@ -63,10 +63,10 @@ pub fn systeminfo() {
     }
 
     // if cfg!(target_os = "windows") {
-    if cfg!(windows) {
-        println!("fetch registry info under windows");
-        if let Err(e) = reg::query_uninstall_keys(Some("python")) {
-            println!("found an error {:?}", e);
-        }
-    }
+    // if cfg!(windows) {
+    //     println!("fetch registry info under windows");
+    //     if let Err(e) = reg::query_uninstall_keys(Some("python")) {
+    //         println!("found an error {:?}", e);
+    //     }
+    // }
 }
