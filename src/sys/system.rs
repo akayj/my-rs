@@ -1,8 +1,8 @@
 use sysinfo::{DiskExt, System, SystemExt};
 
-use crate::sys::{battery_info, gpu_info};
 #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
 use crate::sys::cpu_info;
+use crate::sys::{battery_info, gpu_info};
 
 // const KB: u64 = 1 << 10;
 const MIB: u64 = 1 << 20;
@@ -32,7 +32,7 @@ pub fn system_info() {
             "Name: {:?}, {:?}, FS: {} Free: ({:.1} GiB /{:.1} GiB, {:.2}%)",
             disk.name(),
             disk.mount_point(),
-std::str::from_utf8(disk.file_system()).unwrap(),
+            std::str::from_utf8(disk.file_system()).unwrap(),
             human_size(disk.available_space(), GIB),
             human_size(disk.total_space(), GIB),
             (disk.available_space() * 100) as f64 / disk.total_space() as f64,
