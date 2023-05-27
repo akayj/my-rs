@@ -15,16 +15,12 @@ pub fn system_info() {
     let mut sys = System::new_all();
     sys.refresh_all();
 
-    println!("System name: {}", sys.name().unwrap_or_default());
-    println!(
-        "System kernel version: {}",
-        sys.kernel_version().unwrap_or_default()
+    println!("Hostname: {}", sys.host_name().unwrap_or_default());
+    println!("Operation System: {} {}",
+        sys.name().unwrap_or_default(), 
+        sys.os_version().unwrap_or_default(),
+        // sys.kernel_version().unwrap_or_default(),
     );
-    println!(
-        "System OS version: {}",
-        sys.os_version().unwrap_or_default()
-    );
-    println!("System host name: {}", sys.host_name().unwrap_or_default());
 
     log::debug!("=> disks:");
     for disk in sys.disks() {
@@ -78,9 +74,9 @@ pub fn full_info() {
 
     // sys::systeminfo();
     match gpu_info() {
-        // Err(e) => println!("get gpu info error: {}", e),
-        Err(_) => (),
-        Ok(_) => println!("fetch gpu info ok"),
+        Ok(_) => (),
+        Err(e) => println!("get gpu info error: {}", e),
+        // Err(_) => (),
     }
 }
 
