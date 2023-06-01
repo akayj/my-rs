@@ -1,5 +1,5 @@
 use std::fs::File;
-use std::io::{self, BufRead, BufReader, Lines, Result};
+use std::io::{BufRead, BufReader, Lines, Result};
 use std::path::Path;
 
 // The output is wrapped in a Result to allow matching on errors
