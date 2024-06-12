@@ -2,7 +2,7 @@
 name = "my-rs"
 version = "0.1.0"
 edition = "2021"
-rust-version = "1.69"
+rust-version = "1.75"
 # links = "z"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -14,21 +14,21 @@ path = "src/main.rs"
 libc = "0.2"
 
 clap = { version = "4.3", features = ["derive"] }
-sysinfo = "0.29"
+sysinfo = "0.30"
 systemstat = "0.2"
 
 raw-cpuid = "11.0"
 
-scraper = "0.16"
+scraper = "0.19"
 
 serde = { version = "1.0.163", features = ["derive"] }
 serde_json = { version = "1.0.96" }
 log = "0.4"
-env_logger = "0.10"
+env_logger = "0.11"
 chrono = "0.4"
 
 ureq = { version = "2.6", features = ["json", "socks-proxy"] }
-reqwest = { version = "0.11", features = ["blocking", "json"] }
+reqwest = { version = "0.12", features = ["blocking", "json"] }
 tokio = { version = "1.28", features = ["io-util", "net", "time", "macros"] }
 
 notify-rust = "4.8.0"
@@ -38,7 +38,7 @@ anyhow = "1.0"
 
 futures = "0.3"
 battery = "0.7.8"
-nvml-wrapper = "0.9"
+nvml-wrapper = "0.10"
 pretty-bytes = "0.2"
 
 # uuid = { version = "1.1.2", features = ["v4", "fast-rng"] }
@@ -52,10 +52,10 @@ emojis = "0.6.0"
 indicatif = "0.17"
 
 [target.'cfg(windows)'.dependencies]
-winreg = { version = "0.50" }
+winreg = { version = "0.52" }
 
 [target.'cfg(windows)'.dependencies.windows]
-version = "0.48.0"
+version = "0.57.0"
 features = [
     "Data_Xml_Dom",
     "Win32_Foundation",
@@ -65,7 +65,7 @@ features = [
 ]
 
 [target.'cfg(unix)'.dependencies]
-nix = "0.26"
+nix = "0.29"
 sysctl = "0.5"
 
 # [build-dependencies]

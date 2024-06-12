@@ -1,4 +1,4 @@
-use sysinfo::{DiskExt, System, SystemExt};
+use sysinfo::{Disks, System};
 
 #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
 use crate::sys::cpu_info;
@@ -12,23 +12,22 @@ const GIB: u64 = 1 << 30;
 // const GB: u64 = 1_000_000_000;
 
 pub fn system_info() {
-    let mut sys = System::new_all();
-    sys.refresh_all();
-
-    println!("Hostname: {}", sys.host_name().unwrap_or_default());
-    println!("Operation System: {} {}",
-        sys.name().unwrap_or_default(), 
-        sys.os_version().unwrap_or_default(),
+    println!("Hostname: {}", System::host_name().unwrap_or_default());
+    println!(
+        "Operation System: {} {}",
+        System::name().unwrap_or_default(),
+        System::os_version().unwrap_or_default(),
         // sys.kernel_version().unwrap_or_default(),
     );
 
     log::debug!("=> disks:");
-    for disk in sys.disks() {
+    let disks = Disks::new_with_refreshed_list();
+    for disk in disks.list() {
         log::debug!(
-            "Name: {:?}, {:?}, FS: {} Free: ({:.1} GiB /{:.1} GiB, {:.2}%)",
+            "Name: {:?}, {:?}, FS: {:?} Free: ({:.1} GiB /{:.1} GiB, {:.2}%)",
             disk.name(),
             disk.mount_point(),
-            std::str::from_utf8(disk.file_system()).unwrap(),
+            disk.file_system(),
             human_size(disk.available_space(), GIB),
             human_size(disk.total_space(), GIB),
             (disk.available_space() * 100) as f64 / disk.total_space() as f64,
@@ -44,6 +43,9 @@ pub fn system_info() {
     //         data.transmitted()
     //     );
     // }
+
+    let mut sys = System::new_all();
+    sys.refresh_all();
 
     log::debug!("=> system:");
     log::debug!(

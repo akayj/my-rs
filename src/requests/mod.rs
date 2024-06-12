@@ -1,6 +1,6 @@
 use reqwest::header::{HeaderMap, HeaderValue, ACCEPT, REFERER, USER_AGENT};
 
-pub use download::{simple_download, DownloadHelper, Downloader};
+pub use download::{simple_download, Downloader};
 
 pub use self::douban::Douban;
 pub use self::hot::HotGirl;
